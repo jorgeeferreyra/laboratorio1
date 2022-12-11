@@ -7,7 +7,7 @@ import entrega.contracts.Controller;
 import entrega.exceptions.generic.ValidationException;
 import entrega.exceptions.repositories.UserDaoException;
 import entrega.models.User;
-import entrega.repositories.H2DaoAbstractFactory;
+import entrega.repositories.H2DaoFactory;
 import entrega.repositories.users.UserDao;
 import entrega.views.auth.login.LoginFormPanel;
 import entrega.views.auth.register.RegisterFormPanel;
@@ -60,10 +60,10 @@ public class AuthController implements Controller {
 				
 				frontController.setLoading(true);
 				
-				UserDao userRepository = H2DaoAbstractFactory.getUserRepository();
+				UserDao userDao = H2DaoFactory.getUserDao();
 				
 				try {
-					User user = userRepository.getByIdNumberAndPassword(idNumber, password);
+					User user = userDao.getByIdNumberAndPassword(idNumber, password);
 					
 					if (user instanceof User) {
 						frontController.setUser(user);
@@ -108,15 +108,15 @@ public class AuthController implements Controller {
 				frontController.setLoading(true);
 				
 				try {
-					UserDao userRepository = H2DaoAbstractFactory.getUserRepository();
+					UserDao userDao = H2DaoFactory.getUserDao();
 					
-					User user = userRepository.getByIdNumber(idNumber);
+					User user = userDao.getByIdNumber(idNumber);
 					
 					if (user instanceof User) {
 						frontController.showWarning("El documento ingresado ya se encuentra registrado");
 					}
 					
-					user = userRepository.getByEmail(email);
+					user = userDao.getByEmail(email);
 					
 					if (user instanceof User) {
 						frontController.showWarning("El email ingresado ya se encuentra registrado");
@@ -124,7 +124,7 @@ public class AuthController implements Controller {
 					
 					user = new User(firstName, lastName, idNumber, email, password);
 					
-					userRepository.save(user);
+					userDao.save(user);
 										
 					frontController.setUser(user);
 					frontController.focusDoctorsController();

@@ -7,7 +7,7 @@ import entrega.contracts.Controller;
 import entrega.exceptions.generic.ValidationException;
 import entrega.exceptions.repositories.DoctorDaoException;
 import entrega.models.Doctor;
-import entrega.repositories.H2DaoAbstractFactory;
+import entrega.repositories.H2DaoFactory;
 import entrega.repositories.doctors.DoctorDao;
 import entrega.views.doctors.DoctorFormPanel;
 import entrega.views.doctors.DoctorListPanel;
@@ -39,9 +39,9 @@ public class DoctorController implements Controller {
 				try {
 					frontController.setLoading(true);
 					
-					DoctorDao doctorRepository = H2DaoAbstractFactory.getDoctorRepository();
+					DoctorDao doctorDao = H2DaoFactory.getDoctorDao();
 					
-					doctorListPanel.setContent(doctorRepository.getAll(frontController.getUser().getId()));
+					doctorListPanel.setContent(doctorDao.getAll(frontController.getUser().getId()));
 					
 					frontController.showPanel(doctorListPanel);
 				} catch (DoctorDaoException e) {
@@ -121,9 +121,9 @@ public class DoctorController implements Controller {
 				}
 
 				try {
-					DoctorDao doctorRepository = H2DaoAbstractFactory.getDoctorRepository();
+					DoctorDao doctorDao = H2DaoFactory.getDoctorDao();
 					
-					doctorRepository.save(doctor);
+					doctorDao.save(doctor);
 					
 					showDoctorListPanel();
 				} catch (DoctorDaoException e) {
@@ -152,11 +152,11 @@ public class DoctorController implements Controller {
 			@Override
 			protected Void doInBackground() throws Exception {
 				try {
-					DoctorDao doctorRepository = H2DaoAbstractFactory.getDoctorRepository();
+					DoctorDao doctorDao = H2DaoFactory.getDoctorDao();
 							
 					// TODO: chequear que el doctor no tenga turnos asociados
 					
-					doctorRepository.delete(doctor);
+					doctorDao.delete(doctor);
 					
 					showDoctorListPanel();
 				} catch (DoctorDaoException e) {

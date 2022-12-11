@@ -5,7 +5,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import entrega.contracts.Controller;
-import entrega.contracts.Database;
 import entrega.controllers.AuthController;
 import entrega.controllers.DoctorController;
 import entrega.models.User;
@@ -17,7 +16,6 @@ import entrega.models.User;
  */
 
 public class FrontController implements Controller {
-	private Database database;
 	private JFrame frame;
 	private boolean loading;
 	
