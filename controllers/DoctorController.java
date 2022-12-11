@@ -7,7 +7,7 @@ import entrega.contracts.Controller;
 import entrega.exceptions.generic.ValidationException;
 import entrega.exceptions.repositories.DoctorDaoException;
 import entrega.models.Doctor;
-import entrega.repositories.Repositories;
+import entrega.repositories.H2DaoAbstractFactory;
 import entrega.repositories.doctors.DoctorDao;
 import entrega.views.doctors.DoctorFormPanel;
 import entrega.views.doctors.DoctorListPanel;
@@ -39,7 +39,7 @@ public class DoctorController implements Controller {
 				try {
 					frontController.setLoading(true);
 					
-					DoctorDao doctorRepository = Repositories.getDoctorRepository();
+					DoctorDao doctorRepository = H2DaoAbstractFactory.getDoctorRepository();
 					
 					doctorListPanel.setContent(doctorRepository.getAll(frontController.getUser().getId()));
 					
@@ -121,7 +121,7 @@ public class DoctorController implements Controller {
 				}
 
 				try {
-					DoctorDao doctorRepository = Repositories.getDoctorRepository();
+					DoctorDao doctorRepository = H2DaoAbstractFactory.getDoctorRepository();
 					
 					doctorRepository.save(doctor);
 					
@@ -152,7 +152,7 @@ public class DoctorController implements Controller {
 			@Override
 			protected Void doInBackground() throws Exception {
 				try {
-					DoctorDao doctorRepository = Repositories.getDoctorRepository();
+					DoctorDao doctorRepository = H2DaoAbstractFactory.getDoctorRepository();
 							
 					// TODO: chequear que el doctor no tenga turnos asociados
 					

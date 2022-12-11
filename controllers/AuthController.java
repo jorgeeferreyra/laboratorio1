@@ -7,7 +7,7 @@ import entrega.contracts.Controller;
 import entrega.exceptions.generic.ValidationException;
 import entrega.exceptions.repositories.UserDaoException;
 import entrega.models.User;
-import entrega.repositories.Repositories;
+import entrega.repositories.H2DaoAbstractFactory;
 import entrega.repositories.users.UserDao;
 import entrega.views.auth.login.LoginFormPanel;
 import entrega.views.auth.register.RegisterFormPanel;
@@ -60,7 +60,7 @@ public class AuthController implements Controller {
 				
 				frontController.setLoading(true);
 				
-				UserDao userRepository = Repositories.getUserRepository();
+				UserDao userRepository = H2DaoAbstractFactory.getUserRepository();
 				
 				try {
 					User user = userRepository.getByIdNumberAndPassword(idNumber, password);
@@ -108,7 +108,7 @@ public class AuthController implements Controller {
 				frontController.setLoading(true);
 				
 				try {
-					UserDao userRepository = Repositories.getUserRepository();
+					UserDao userRepository = H2DaoAbstractFactory.getUserRepository();
 					
 					User user = userRepository.getByIdNumber(idNumber);
 					

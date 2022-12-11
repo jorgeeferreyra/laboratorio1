@@ -10,8 +10,6 @@ import entrega.database.H2Database;
 import entrega.exceptions.generic.DatabaseException;
 
 abstract public class H2Dao extends Dao {	
-		
-	
 	public H2Dao(H2Database database) {
 		this.setDatabase(database);
 	}
