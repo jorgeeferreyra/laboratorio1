@@ -1,7 +1,5 @@
 package entrega.models;
 
-import entrega.contracts.Model;
-
 /*
  	CREATE TABLE DOCTORS(
  		ID INT PRIMARY KEY,

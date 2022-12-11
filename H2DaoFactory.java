@@ -1,14 +1,14 @@
-package entrega.repositories;
+package entrega;
 
-import entrega.contracts.Database;
+import entrega.dao.doctors.DoctorDao;
+import entrega.dao.doctors.DoctorH2Dao;
+import entrega.dao.users.UserDao;
+import entrega.dao.users.UserH2Dao;
+import entrega.database.Database;
 import entrega.database.H2Database;
-import entrega.exceptions.generic.DatabaseException;
-import entrega.exceptions.repositories.DoctorDaoException;
-import entrega.exceptions.repositories.UserDaoException;
-import entrega.repositories.doctors.DoctorDao;
-import entrega.repositories.doctors.DoctorH2Dao;
-import entrega.repositories.users.UserH2Dao;
-import entrega.repositories.users.UserDao;
+import entrega.exceptions.DatabaseException;
+import entrega.exceptions.DoctorDaoException;
+import entrega.exceptions.UserDaoException;
 
 public class H2DaoFactory {
 	private static Database database;

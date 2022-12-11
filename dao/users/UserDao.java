@@ -1,8 +1,8 @@
-package entrega.repositories.users;
+package entrega.dao.users;
 
 import java.util.List;
 
-import entrega.exceptions.repositories.UserDaoException;
+import entrega.exceptions.UserDaoException;
 import entrega.models.User;
 
 public interface UserDao {

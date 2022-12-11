@@ -1,4 +1,4 @@
-package entrega.contracts;
+package entrega.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import entrega.exceptions.generic.DatabaseException;
+import entrega.exceptions.DatabaseException;
 
 abstract public class Database {
 	private Connection connection = null;

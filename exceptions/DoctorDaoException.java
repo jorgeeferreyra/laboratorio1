@@ -1,4 +1,4 @@
-package entrega.exceptions.repositories;
+package entrega.exceptions;
 
 public class DoctorDaoException extends Exception {
 	public DoctorDaoException(String message) {

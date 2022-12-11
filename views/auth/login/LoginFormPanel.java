@@ -12,10 +12,10 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import entrega.contracts.WithValidateInputs;
-import entrega.controllers.AuthController;
-import entrega.exceptions.generic.ValidationException;
+import entrega.exceptions.ValidationException;
+import entrega.services.AuthService;
 import entrega.validation.Validator;
+import entrega.validation.WithValidateInputs;
 import entrega.validation.rules.CharCountBetweenRule;
 import entrega.views.BorderPanelWithTitle;
 
@@ -26,8 +26,8 @@ public class LoginFormPanel extends BorderPanelWithTitle implements WithValidate
 	private String idNumberText = "Documento";
 	private String passwordText = "Contraseña";
 	
-	public LoginFormPanel(AuthController controller) {
-		super("Login", controller);
+	public LoginFormPanel(AuthService service) {
+		super("Login", service);
 		
 		this.build();
 	}
@@ -88,8 +88,8 @@ public class LoginFormPanel extends BorderPanelWithTitle implements WithValidate
 			new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					AuthController controller = (AuthController) getController();
-					controller.login();
+					AuthService service = (AuthService) getService();
+					service.login();
 				}
 			}
 		);
@@ -108,8 +108,8 @@ public class LoginFormPanel extends BorderPanelWithTitle implements WithValidate
 			new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					AuthController controller = (AuthController) getController();
-					controller.showRegisterFormPanel();
+					AuthService service = (AuthService) getService();
+					service.showRegisterFormPanel();
 				}
 			}
 		);

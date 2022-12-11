@@ -1,4 +1,4 @@
-package entrega.contracts;
+package entrega.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import entrega.database.Database;
 import entrega.database.H2Database;
-import entrega.exceptions.generic.DatabaseException;
+import entrega.exceptions.DatabaseException;
+import entrega.models.Model;
 
 abstract public class H2Dao extends Dao {	
 	public H2Dao(H2Database database) {

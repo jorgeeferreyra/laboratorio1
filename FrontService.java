@@ -4,10 +4,10 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import entrega.contracts.Controller;
-import entrega.controllers.AuthController;
-import entrega.controllers.DoctorController;
 import entrega.models.User;
+import entrega.services.AuthService;
+import entrega.services.DoctorService;
+import entrega.services.Service;
 
 /*
  * Antes de comenzar asegurese de crear las tablas necesarias
@@ -15,22 +15,22 @@ import entrega.models.User;
  * en cada modelo se encuentra la sentencia para crear su tabla
  */
 
-public class FrontController implements Controller {
+public class FrontService implements Service {
 	private JFrame frame;
 	private boolean loading;
 	
-	private AuthController authController;
-	private DoctorController loggedController;
+	private AuthService authService;
+	private DoctorService doctorService;
 	
 	private User user;
 
 	public static void main(String[] args) {
-		FrontController frontController = new FrontController();
+		FrontService frontService = new FrontService();
 
-		frontController.showIndexPanel();
+		frontService.showIndexPanel();
 	}
 	
-	public FrontController() {
+	public FrontService() {
 		this.setLoading(true);
 		this.build();
 		this.setLoading(false);
@@ -38,8 +38,8 @@ public class FrontController implements Controller {
 
 	@Override
 	public void build() {
-		this.authController = new AuthController(this);
-		this.loggedController = new DoctorController(this);
+		this.authService = new AuthService(this);
+		this.doctorService = new DoctorService(this);
 		
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,22 +48,21 @@ public class FrontController implements Controller {
 
 	@Override
 	public void showIndexPanel() {
-		/* 
-		 * TODO: guardar el usuario logueado en un archivo
-		 */
+		this.loadRememberedUser();
+		
 		if (this.getUser() instanceof User) {
-			this.focusDoctorsController();
+			this.focusDoctorsService();
 		} else {
-			this.focusAuthController();
+			this.focusAuthService();
 		}
 	}
 	
-	public void focusAuthController() {
-		this.authController.showIndexPanel();
+	public void focusAuthService() {
+		this.authService.showIndexPanel();
 	}
 	
-	public void focusDoctorsController() {
-		this.loggedController.showIndexPanel();
+	public void focusDoctorsService() {
+		this.doctorService.showIndexPanel();
 	}
 
 	public void showPanel(JPanel panel) {
@@ -126,5 +125,9 @@ public class FrontController implements Controller {
 	
 	public boolean showConfirm(String title, String message) {
 		return JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+	}
+	
+	private void loadRememberedUser() {
+		// TODO: traer el usuario logueado/recordado desde algun medio: archivo o base de datos
 	}
 }

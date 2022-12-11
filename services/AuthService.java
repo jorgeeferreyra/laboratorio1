@@ -1,25 +1,24 @@
-package entrega.controllers;
+package entrega.services;
 
 import javax.swing.SwingWorker;
 
-import entrega.FrontController;
-import entrega.contracts.Controller;
-import entrega.exceptions.generic.ValidationException;
-import entrega.exceptions.repositories.UserDaoException;
+import entrega.FrontService;
+import entrega.H2DaoFactory;
+import entrega.dao.users.UserDao;
+import entrega.exceptions.UserDaoException;
+import entrega.exceptions.ValidationException;
 import entrega.models.User;
-import entrega.repositories.H2DaoFactory;
-import entrega.repositories.users.UserDao;
 import entrega.views.auth.login.LoginFormPanel;
 import entrega.views.auth.register.RegisterFormPanel;
 
-public class AuthController implements Controller {
-	private FrontController frontController;
+public class AuthService implements Service {
+	private FrontService frontService;
 	
 	private RegisterFormPanel registerFormPanel;
 	private LoginFormPanel loginFormPanel;
 	
-	public AuthController(FrontController frontController) {
-		this.frontController = frontController;
+	public AuthService(FrontService frontService) {
+		this.frontService = frontService;
 		this.build();
 	}
 	
@@ -33,15 +32,15 @@ public class AuthController implements Controller {
 	}
 	
 	public void showLoginFormPanel() {
-		this.frontController.showPanel(this.loginFormPanel);
+		this.frontService.showPanel(this.loginFormPanel);
 	}
 	
 	public void showRegisterFormPanel() {
-		this.frontController.showPanel(this.registerFormPanel);
+		this.frontService.showPanel(this.registerFormPanel);
 	}
 	
 	public void login() {
-		if (this.frontController.isLoading()) {
+		if (this.frontService.isLoading()) {
 			return;
 		}
 		
@@ -51,14 +50,14 @@ public class AuthController implements Controller {
 				try {
 					loginFormPanel.validateInputs();
 				} catch (ValidationException e) {
-					frontController.showWarning(e.getMessage());
+					frontService.showWarning(e.getMessage());
 					return null;
 				}
 				
 				String idNumber = loginFormPanel.getIdNumber();
 				String password = loginFormPanel.getPassword();
 				
-				frontController.setLoading(true);
+				frontService.setLoading(true);
 				
 				UserDao userDao = H2DaoFactory.getUserDao();
 				
@@ -66,16 +65,16 @@ public class AuthController implements Controller {
 					User user = userDao.getByIdNumberAndPassword(idNumber, password);
 					
 					if (user instanceof User) {
-						frontController.setUser(user);
-						frontController.focusDoctorsController();
+						frontService.setUser(user);
+						frontService.focusDoctorsService();
 					} else {
-						frontController.showWarning("El documento o contraseña no coinciden");
+						frontService.showWarning("El documento o contraseña no coinciden");
 					}
 					
 				} catch (UserDaoException e) {
-					frontController.handleExceptions(e, "Error al iniciar sesión");
+					frontService.handleExceptions(e, "Error al iniciar sesión");
 				} finally {
-					frontController.setLoading(false);
+					frontService.setLoading(false);
 				}
 				return null;
 			}
@@ -85,7 +84,7 @@ public class AuthController implements Controller {
 	}
 	
 	public void register() {
-		if (this.frontController.isLoading()) {
+		if (this.frontService.isLoading()) {
 			return;
 		}
 		
@@ -95,7 +94,7 @@ public class AuthController implements Controller {
 				try {
 					registerFormPanel.validateInputs();
 				} catch (ValidationException e) {
-					frontController.showWarning(e.getMessage());
+					frontService.showWarning(e.getMessage());
 					return null;
 				}
 				
@@ -105,7 +104,7 @@ public class AuthController implements Controller {
 				String email = registerFormPanel.getEmail();
 				String password = registerFormPanel.getPassword();
 				
-				frontController.setLoading(true);
+				frontService.setLoading(true);
 				
 				try {
 					UserDao userDao = H2DaoFactory.getUserDao();
@@ -113,25 +112,25 @@ public class AuthController implements Controller {
 					User user = userDao.getByIdNumber(idNumber);
 					
 					if (user instanceof User) {
-						frontController.showWarning("El documento ingresado ya se encuentra registrado");
+						frontService.showWarning("El documento ingresado ya se encuentra registrado");
 					}
 					
 					user = userDao.getByEmail(email);
 					
 					if (user instanceof User) {
-						frontController.showWarning("El email ingresado ya se encuentra registrado");
+						frontService.showWarning("El email ingresado ya se encuentra registrado");
 					}
 					
 					user = new User(firstName, lastName, idNumber, email, password);
 					
 					userDao.save(user);
 										
-					frontController.setUser(user);
-					frontController.focusDoctorsController();
+					frontService.setUser(user);
+					frontService.focusDoctorsService();
 				} catch (UserDaoException e) {
-					frontController.handleExceptions(e, "Error al registrar");
+					frontService.handleExceptions(e, "Error al registrar");
 				} finally {
-					frontController.setLoading(false);
+					frontService.setLoading(false);
 				}
 				return null;
 			}

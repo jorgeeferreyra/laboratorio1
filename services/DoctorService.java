@@ -1,24 +1,23 @@
-package entrega.controllers;
+package entrega.services;
 
 import javax.swing.SwingWorker;
 
-import entrega.FrontController;
-import entrega.contracts.Controller;
-import entrega.exceptions.generic.ValidationException;
-import entrega.exceptions.repositories.DoctorDaoException;
+import entrega.FrontService;
+import entrega.H2DaoFactory;
+import entrega.dao.doctors.DoctorDao;
+import entrega.exceptions.DoctorDaoException;
+import entrega.exceptions.ValidationException;
 import entrega.models.Doctor;
-import entrega.repositories.H2DaoFactory;
-import entrega.repositories.doctors.DoctorDao;
 import entrega.views.doctors.DoctorFormPanel;
 import entrega.views.doctors.DoctorListPanel;
 
-public class DoctorController implements Controller {
-	private FrontController frontController;
+public class DoctorService implements Service {
+	private FrontService frontService;
 	private DoctorListPanel doctorListPanel;
 	private DoctorFormPanel doctorFormPanel;
 	
-	public DoctorController(FrontController frontController) {
-		this.frontController = frontController;
+	public DoctorService(FrontService frontService) {
+		this.frontService = frontService;
 		this.build();
 	}
 	
@@ -37,17 +36,17 @@ public class DoctorController implements Controller {
 			@Override
 			protected Void doInBackground() throws Exception {
 				try {
-					frontController.setLoading(true);
+					frontService.setLoading(true);
 					
 					DoctorDao doctorDao = H2DaoFactory.getDoctorDao();
 					
-					doctorListPanel.setContent(doctorDao.getAll(frontController.getUser().getId()));
+					doctorListPanel.setContent(doctorDao.getAll(frontService.getUser().getId()));
 					
-					frontController.showPanel(doctorListPanel);
+					frontService.showPanel(doctorListPanel);
 				} catch (DoctorDaoException e) {
-					frontController.handleExceptions(e, "Error mostrando doctores");
+					frontService.handleExceptions(e, "Error mostrando doctores");
 				} finally {
-					frontController.setLoading(false);
+					frontService.setLoading(false);
 				}
 				
 				return null;
@@ -63,7 +62,7 @@ public class DoctorController implements Controller {
 			protected Void doInBackground() throws Exception {
 				doctorFormPanel.setDoctor(null);
 				
-				frontController.showPanel(doctorFormPanel);
+				frontService.showPanel(doctorFormPanel);
 				
 				return null;
 			}
@@ -78,7 +77,7 @@ public class DoctorController implements Controller {
 			protected Void doInBackground() throws Exception {
 				doctorFormPanel.setDoctor(doctor);
 				
-				frontController.showPanel(doctorFormPanel);
+				frontService.showPanel(doctorFormPanel);
 					
 				return null;
 			}
@@ -88,7 +87,7 @@ public class DoctorController implements Controller {
 	}
 	
 	public void saveDoctor() {
-		if (this.frontController.isLoading()) {
+		if (this.frontService.isLoading()) {
 			return;
 		}
 		
@@ -98,7 +97,7 @@ public class DoctorController implements Controller {
 				try {					
 					doctorFormPanel.validateInputs();
 				} catch (ValidationException e) {
-					frontController.showWarning(e.getMessage());
+					frontService.showWarning(e.getMessage());
 					return null;
 				}
 				
@@ -107,12 +106,12 @@ public class DoctorController implements Controller {
 				String phone = doctorFormPanel.getPhone();
 				String email = doctorFormPanel.getEmail();
 				
-				frontController.setLoading(true);
+				frontService.setLoading(true);
 				
 				Doctor doctor = doctorFormPanel.getDoctor();
 				
 				if (doctor == null) {
-					doctor = new Doctor(frontController.getUser().getId(), firstName, lastName, phone, email);
+					doctor = new Doctor(frontService.getUser().getId(), firstName, lastName, phone, email);
 				} else {
 					doctor.setFirstName(firstName);
 					doctor.setLastName(lastName);
@@ -127,9 +126,9 @@ public class DoctorController implements Controller {
 					
 					showDoctorListPanel();
 				} catch (DoctorDaoException e) {
-					frontController.handleExceptions(e, "Error mostrando doctores");
+					frontService.handleExceptions(e, "Error mostrando doctores");
 				} finally {
-					frontController.setLoading(false);
+					frontService.setLoading(false);
 				}
 				
 				return null;
@@ -140,11 +139,11 @@ public class DoctorController implements Controller {
 	}
 	
 	public void removeDoctor(Doctor doctor) {
-		if (this.frontController.isLoading()) {
+		if (this.frontService.isLoading()) {
 			return;
 		}
 		
-		if (!this.frontController.showConfirm("¿Está seguro que desea eliminar a "+ doctor.getFirstName() + " " + doctor.getLastName() +"?")) {
+		if (!this.frontService.showConfirm("¿Está seguro que desea eliminar a "+ doctor.getFirstName() + " " + doctor.getLastName() +"?")) {
 			return;
 		}
 		
@@ -160,9 +159,9 @@ public class DoctorController implements Controller {
 					
 					showDoctorListPanel();
 				} catch (DoctorDaoException e) {
-					frontController.handleExceptions(e, "Error mostrando doctores");
+					frontService.handleExceptions(e, "Error mostrando doctores");
 				} finally {
-					frontController.setLoading(false);
+					frontService.setLoading(false);
 				}
 				
 				return null;

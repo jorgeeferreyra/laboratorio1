@@ -1,4 +1,4 @@
-package entrega.repositories.users;
+package entrega.dao.users;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import entrega.contracts.H2Dao;
-import entrega.contracts.Model;
+import entrega.dao.H2Dao;
 import entrega.database.H2Database;
-import entrega.exceptions.generic.DatabaseException;
-import entrega.exceptions.repositories.UserDaoException;
+import entrega.exceptions.DatabaseException;
+import entrega.exceptions.UserDaoException;
+import entrega.models.Model;
 import entrega.models.User;
 
 public class UserH2Dao extends H2Dao implements UserDao {

@@ -1,8 +1,8 @@
-package entrega.repositories.doctors;
+package entrega.dao.doctors;
 
 import java.util.List;
 
-import entrega.exceptions.repositories.DoctorDaoException;
+import entrega.exceptions.DoctorDaoException;
 import entrega.models.Doctor;
 
 public interface DoctorDao {

@@ -1,4 +1,4 @@
-package entrega.repositories.doctors;
+package entrega.dao.doctors;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import entrega.contracts.H2Dao;
-import entrega.contracts.Model;
+import entrega.dao.H2Dao;
 import entrega.database.H2Database;
-import entrega.exceptions.generic.DatabaseException;
-import entrega.exceptions.repositories.DoctorDaoException;
+import entrega.exceptions.DatabaseException;
+import entrega.exceptions.DoctorDaoException;
 import entrega.models.Doctor;
+import entrega.models.Model;
 
 public class DoctorH2Dao extends H2Dao implements DoctorDao {
 	public DoctorH2Dao(H2Database database) {

@@ -1,7 +1,6 @@
 package entrega.database;
 
-import entrega.contracts.Database;
-import entrega.exceptions.generic.DatabaseException;
+import entrega.exceptions.DatabaseException;
 
 public class H2Database extends Database {
 	public H2Database(String url, String user, String password) throws DatabaseException {

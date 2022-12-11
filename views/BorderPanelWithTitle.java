@@ -7,14 +7,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import entrega.contracts.Controller;
+import entrega.services.Service;
 
 public class BorderPanelWithTitle extends JPanel {
-	private Controller controller;
+	private Service service;
 	private JLabel titleLabel;
 	
-	protected BorderPanelWithTitle(String title, Controller controller) {
-		this.controller = controller;
+	protected BorderPanelWithTitle(String title, Service service) {
+		this.service = service;
 		
 		this.setLayout(new BorderLayout());
 		
@@ -24,8 +24,8 @@ public class BorderPanelWithTitle extends JPanel {
 		this.add(titleLabel, BorderLayout.NORTH);
 	}
 	
-	protected Controller getController() {
-		return controller;
+	protected Service getService() {
+		return service;
 	}
 	
 	protected void setTitle(String title) {

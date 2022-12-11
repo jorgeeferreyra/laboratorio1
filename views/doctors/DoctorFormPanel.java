@@ -11,11 +11,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import entrega.contracts.WithValidateInputs;
-import entrega.controllers.DoctorController;
-import entrega.exceptions.generic.ValidationException;
+import entrega.exceptions.ValidationException;
 import entrega.models.Doctor;
+import entrega.services.DoctorService;
 import entrega.validation.Validator;
+import entrega.validation.WithValidateInputs;
 import entrega.validation.rules.CharCountBetweenRule;
 import entrega.validation.rules.EmailRule;
 import entrega.views.BorderPanelWithTitle;
@@ -33,8 +33,8 @@ public class DoctorFormPanel extends BorderPanelWithTitle implements WithValidat
 	private String phoneText = "Teléfono";
 	private String emailText = "Correo Electrónico";
 	
-	public DoctorFormPanel(DoctorController controller) {
-		super("Nuevo Médico", controller);
+	public DoctorFormPanel(DoctorService service) {
+		super("Nuevo Médico", service);
 		
 		this.build();
 	}
@@ -146,8 +146,8 @@ public class DoctorFormPanel extends BorderPanelWithTitle implements WithValidat
 			new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					DoctorController controller = (DoctorController) getController();
-					controller.saveDoctor();
+					DoctorService service = (DoctorService) getService();
+					service.saveDoctor();
 				}
 			}
 		);
@@ -168,8 +168,8 @@ public class DoctorFormPanel extends BorderPanelWithTitle implements WithValidat
 			new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					DoctorController controller = (DoctorController) getController();
-					controller.showDoctorListPanel();
+					DoctorService service = (DoctorService) getService();
+					service.showDoctorListPanel();
 				}
 			}
 		);

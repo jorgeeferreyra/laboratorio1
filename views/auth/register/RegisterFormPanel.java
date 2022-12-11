@@ -12,10 +12,10 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import entrega.contracts.WithValidateInputs;
-import entrega.controllers.AuthController;
-import entrega.exceptions.generic.ValidationException;
+import entrega.exceptions.ValidationException;
+import entrega.services.AuthService;
 import entrega.validation.Validator;
+import entrega.validation.WithValidateInputs;
 import entrega.validation.rules.CharCountBetweenRule;
 import entrega.validation.rules.EmailRule;
 import entrega.views.BorderPanelWithTitle;
@@ -33,8 +33,8 @@ public class RegisterFormPanel extends BorderPanelWithTitle implements WithValid
 	private String emailText = "Correo Electrónico";
 	private String passwordText = "Contraseña";
 	
-	public RegisterFormPanel(AuthController controller) {
-		super("Registrarse", controller);
+	public RegisterFormPanel(AuthService service) {
+		super("Registrarse", service);
 		
 		this.build();
 	}
@@ -145,8 +145,8 @@ public class RegisterFormPanel extends BorderPanelWithTitle implements WithValid
 			new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					AuthController controller = (AuthController) getController();
-					controller.register();
+					AuthService service = (AuthService) getService();
+					service.register();
 				}
 			}
 		);
@@ -168,8 +168,8 @@ public class RegisterFormPanel extends BorderPanelWithTitle implements WithValid
 			new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					AuthController controller = (AuthController) getController();
-					controller.showLoginFormPanel();
+					AuthService service = (AuthService) getService();
+					service.showLoginFormPanel();
 				}
 			}
 		);

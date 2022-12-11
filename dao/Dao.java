@@ -1,9 +1,11 @@
-package entrega.contracts;
+package entrega.dao;
 
 import java.sql.SQLException;
 import java.util.List;
 
-import entrega.exceptions.generic.DatabaseException;
+import entrega.database.Database;
+import entrega.exceptions.DatabaseException;
+import entrega.models.Model;
 
 abstract public class Dao {
 	private Database database;

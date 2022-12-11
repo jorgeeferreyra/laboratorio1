@@ -11,8 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import entrega.controllers.DoctorController;
 import entrega.models.Doctor;
+import entrega.services.DoctorService;
 import entrega.views.BorderPanelWithTitle;
 
 public class DoctorListPanel extends BorderPanelWithTitle {
@@ -25,8 +25,8 @@ public class DoctorListPanel extends BorderPanelWithTitle {
 	private JButton editButton;
 	private JButton removeButton;
 		
-	public DoctorListPanel(DoctorController controller) {
-		super("Médicos", controller);
+	public DoctorListPanel(DoctorService service) {
+		super("Médicos", service);
 		
 		this.build();
 	}
@@ -57,8 +57,8 @@ public class DoctorListPanel extends BorderPanelWithTitle {
 		this.addButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				DoctorController controller = (DoctorController) getController();
-				controller.showDoctorFormPanel();
+				DoctorService service = (DoctorService) getService();
+				service.showDoctorFormPanel();
 			}
 		});
 		buttonPanel.add(this.addButton);
@@ -71,8 +71,8 @@ public class DoctorListPanel extends BorderPanelWithTitle {
 				
 				if (doctorIndex > -1) {
 					Doctor doctor = model.getContent().get(doctorIndex);
-					DoctorController controller = (DoctorController) getController();
-					controller.showDoctorFormPanel(doctor);
+					DoctorService service = (DoctorService) getService();
+					service.showDoctorFormPanel(doctor);
 				}
 			}
 		});
@@ -86,8 +86,8 @@ public class DoctorListPanel extends BorderPanelWithTitle {
 				
 				if (doctorIndex > -1) {
 					Doctor doctor = model.getContent().get(doctorIndex);
-					DoctorController controller = (DoctorController) getController();
-					controller.removeDoctor(doctor);
+					DoctorService service = (DoctorService) getService();
+					service.removeDoctor(doctor);
 				}
 			}
 		});

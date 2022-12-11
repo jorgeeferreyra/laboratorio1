@@ -1,6 +1,6 @@
 package entrega.validation.rules.interfaces;
 
-import entrega.exceptions.generic.ValidationException;
+import entrega.exceptions.ValidationException;
 
 public interface Rule {
 	public boolean valid();

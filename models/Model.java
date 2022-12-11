@@ -1,4 +1,4 @@
-package entrega.contracts;
+package entrega.models;
 
 public abstract class Model {
 	private boolean isNew;
