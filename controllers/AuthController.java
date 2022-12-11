@@ -5,10 +5,10 @@ import javax.swing.SwingWorker;
 import entrega.FrontController;
 import entrega.contracts.Controller;
 import entrega.exceptions.generic.ValidationException;
-import entrega.exceptions.repositories.UserRepositoryException;
+import entrega.exceptions.repositories.UserDaoException;
 import entrega.models.User;
 import entrega.repositories.Repositories;
-import entrega.repositories.users.UserRepository;
+import entrega.repositories.users.UserDao;
 import entrega.views.auth.login.LoginFormPanel;
 import entrega.views.auth.register.RegisterFormPanel;
 
@@ -60,7 +60,7 @@ public class AuthController implements Controller {
 				
 				frontController.setLoading(true);
 				
-				UserRepository userRepository = Repositories.getUserRepository();
+				UserDao userRepository = Repositories.getUserRepository();
 				
 				try {
 					User user = userRepository.getByIdNumberAndPassword(idNumber, password);
@@ -72,7 +72,7 @@ public class AuthController implements Controller {
 						frontController.showWarning("El documento o contraseña no coinciden");
 					}
 					
-				} catch (UserRepositoryException e) {
+				} catch (UserDaoException e) {
 					frontController.handleExceptions(e, "Error al iniciar sesión");
 				} finally {
 					frontController.setLoading(false);
@@ -108,7 +108,7 @@ public class AuthController implements Controller {
 				frontController.setLoading(true);
 				
 				try {
-					UserRepository userRepository = Repositories.getUserRepository();
+					UserDao userRepository = Repositories.getUserRepository();
 					
 					User user = userRepository.getByIdNumber(idNumber);
 					
@@ -128,7 +128,7 @@ public class AuthController implements Controller {
 										
 					frontController.setUser(user);
 					frontController.focusDoctorsController();
-				} catch (UserRepositoryException e) {
+				} catch (UserDaoException e) {
 					frontController.handleExceptions(e, "Error al registrar");
 				} finally {
 					frontController.setLoading(false);

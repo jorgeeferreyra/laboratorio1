@@ -19,8 +19,4 @@ public abstract class Model {
 	public void setIsNew(boolean isNew) {
 		this.isNew = isNew;
 	}
-	
-	protected String betweenSingleQuotes(String value) {
-		return "'" + value + "'";
-	}
 }

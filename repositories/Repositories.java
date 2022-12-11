@@ -3,12 +3,12 @@ package entrega.repositories;
 import entrega.contracts.Database;
 import entrega.database.H2Database;
 import entrega.exceptions.generic.DatabaseException;
-import entrega.exceptions.repositories.DoctorRepositoryException;
-import entrega.exceptions.repositories.UserRepositoryException;
-import entrega.repositories.doctors.DoctorRepository;
-import entrega.repositories.doctors.H2DoctorRepository;
-import entrega.repositories.users.H2UserRepository;
-import entrega.repositories.users.UserRepository;
+import entrega.exceptions.repositories.DoctorDaoException;
+import entrega.exceptions.repositories.UserDaoException;
+import entrega.repositories.doctors.DoctorDao;
+import entrega.repositories.doctors.DoctorH2Dao;
+import entrega.repositories.users.UserH2Dao;
+import entrega.repositories.users.UserDao;
 
 public class Repositories {
 	private static Database database;
@@ -24,19 +24,19 @@ public class Repositories {
 		return Repositories.database;
 	}
 	
-	public static UserRepository getUserRepository() throws UserRepositoryException {
+	public static UserDao getUserRepository() throws UserDaoException {
 		try {
-			return new H2UserRepository((H2Database) Repositories.getDatabase());
+			return new UserH2Dao((H2Database) Repositories.getDatabase());
 		} catch (DatabaseException e) {
-			throw new UserRepositoryException(e.getMessage());
+			throw new UserDaoException(e.getMessage());
 		}
 	}
 	
-	public static DoctorRepository getDoctorRepository() throws DoctorRepositoryException {
+	public static DoctorDao getDoctorRepository() throws DoctorDaoException {
 		try {
-			return new H2DoctorRepository((H2Database) Repositories.getDatabase());
+			return new DoctorH2Dao((H2Database) Repositories.getDatabase());
 		} catch (DatabaseException e) {
-			throw new DoctorRepositoryException(e.getMessage());
+			throw new DoctorDaoException(e.getMessage());
 		}
 	}
 }

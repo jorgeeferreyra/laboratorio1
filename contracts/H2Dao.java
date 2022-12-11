@@ -9,13 +9,14 @@ import java.util.List;
 import entrega.database.H2Database;
 import entrega.exceptions.generic.DatabaseException;
 
-abstract public class H2Repository extends DaoRepository {	
+abstract public class H2Dao extends Dao {	
+		
 	
-	public H2Repository(H2Database database) {
+	public H2Dao(H2Database database) {
 		this.setDatabase(database);
 	}
 	
-	public boolean save(DaoModel model) throws DatabaseException {
+	public boolean save(Model model) throws DatabaseException {
 		if (model.getIsNew()) {
 			model.setId(this.getCount(model));
 		}
@@ -31,8 +32,8 @@ abstract public class H2Repository extends DaoRepository {
 		return success;
 	}
 	
-	public boolean delete(DaoModel model) throws DatabaseException {
-		return this.run("DELETE FROM " + model.getTable() + " WHERE id=" + model.getId().toString());
+	public boolean delete(Model model) throws DatabaseException {
+		return this.run("DELETE FROM " + this.getTable() + " WHERE id=" + model.getId().toString());
 	}
 	
 	protected boolean run(String statement) throws DatabaseException {
@@ -75,24 +76,24 @@ abstract public class H2Repository extends DaoRepository {
 		return result;
 	}
 	
-	private String getInsertStatement(DaoModel model) {
-		return this.getInsertStatement(model, model.getValues());
+	private String getInsertStatement(Model model) {
+		return this.getInsertStatement(model, this.getValues(model));
 	}
 	
-	protected String getInsertStatement(DaoModel model, List<String> values) {
-		return "INSERT INTO " + model.getTable() + " VALUES " +
+	protected String getInsertStatement(Model model, List<String> values) {
+		return "INSERT INTO " + this.getTable() + " VALUES " +
 				"(" + String.join(",", values) + ")";
 	}
 	
-	protected String getUpdateStatement(DaoModel model) {
-		return this.getUpdateStatement(model, model.getFields(), model.getValues());
+	protected String getUpdateStatement(Model model) {
+		return this.getUpdateStatement(model, this.getFields(), this.getValues(model));
 	}
 	
-	protected String getUpdateStatement(DaoModel model, String field, String value) {
+	protected String getUpdateStatement(Model model, String field, String value) {
 		return this.getUpdateStatement(model, Arrays.asList(new String[] {field}), Arrays.asList(new String[] {value}));
 	}
 	
-	protected String getUpdateStatement(DaoModel model, List<String> fields, List<String> values) {
+	protected String getUpdateStatement(Model model, List<String> fields, List<String> values) {
 		List<String> rawSQL = new ArrayList<String>();
 		
 		for (int i=0; i < fields.size(); i++) {
@@ -102,17 +103,17 @@ abstract public class H2Repository extends DaoRepository {
 			rawSQL.add(field + "=" + value);
 		}
 		
-		return "UPDATE " + model.getTable() + " SET " +
+		return "UPDATE " + this.getTable() + " SET " +
 				String.join(",", rawSQL) +
 				" WHERE id=" + model.getId().toString();
 	}
 	
 	@Override
-	protected int getCount(DaoModel model) throws DatabaseException {	
+	protected int getCount(Model model) throws DatabaseException {	
 		int result;
 		
 		try {
-			ResultSet resultSet = this.query("SELECT COUNT(id) AS count FROM " + model.getTable());
+			ResultSet resultSet = this.query("SELECT COUNT(id) AS count FROM " + this.getTable());
 			
 			if (!resultSet.next()) {
 				throw new DatabaseException("No se obtuvieron resultados para un recuento. No se pudo calcular identificador autoincremental.");

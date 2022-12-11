@@ -5,10 +5,10 @@ import javax.swing.SwingWorker;
 import entrega.FrontController;
 import entrega.contracts.Controller;
 import entrega.exceptions.generic.ValidationException;
-import entrega.exceptions.repositories.DoctorRepositoryException;
+import entrega.exceptions.repositories.DoctorDaoException;
 import entrega.models.Doctor;
 import entrega.repositories.Repositories;
-import entrega.repositories.doctors.DoctorRepository;
+import entrega.repositories.doctors.DoctorDao;
 import entrega.views.doctors.DoctorFormPanel;
 import entrega.views.doctors.DoctorListPanel;
 
@@ -39,12 +39,12 @@ public class DoctorController implements Controller {
 				try {
 					frontController.setLoading(true);
 					
-					DoctorRepository doctorRepository = Repositories.getDoctorRepository();
+					DoctorDao doctorRepository = Repositories.getDoctorRepository();
 					
 					doctorListPanel.setContent(doctorRepository.getAll(frontController.getUser().getId()));
 					
 					frontController.showPanel(doctorListPanel);
-				} catch (DoctorRepositoryException e) {
+				} catch (DoctorDaoException e) {
 					frontController.handleExceptions(e, "Error mostrando doctores");
 				} finally {
 					frontController.setLoading(false);
@@ -121,12 +121,12 @@ public class DoctorController implements Controller {
 				}
 
 				try {
-					DoctorRepository doctorRepository = Repositories.getDoctorRepository();
+					DoctorDao doctorRepository = Repositories.getDoctorRepository();
 					
 					doctorRepository.save(doctor);
 					
 					showDoctorListPanel();
-				} catch (DoctorRepositoryException e) {
+				} catch (DoctorDaoException e) {
 					frontController.handleExceptions(e, "Error mostrando doctores");
 				} finally {
 					frontController.setLoading(false);
@@ -152,14 +152,14 @@ public class DoctorController implements Controller {
 			@Override
 			protected Void doInBackground() throws Exception {
 				try {
-					DoctorRepository doctorRepository = Repositories.getDoctorRepository();
+					DoctorDao doctorRepository = Repositories.getDoctorRepository();
 							
 					// TODO: chequear que el doctor no tenga turnos asociados
 					
 					doctorRepository.delete(doctor);
 					
 					showDoctorListPanel();
-				} catch (DoctorRepositoryException e) {
+				} catch (DoctorDaoException e) {
 					frontController.handleExceptions(e, "Error mostrando doctores");
 				} finally {
 					frontController.setLoading(false);

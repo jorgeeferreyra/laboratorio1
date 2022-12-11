@@ -5,9 +5,9 @@ import java.util.List;
 
 import entrega.exceptions.generic.DatabaseException;
 
-abstract public class DaoRepository {
+abstract public class Dao {
 	private Database database;
-
+	
 	protected boolean databaseIsConnected() {
 		return this.database.isConnected();
 	}
@@ -38,13 +38,21 @@ abstract public class DaoRepository {
 		this.database = database;
 	}
 	
-	abstract protected boolean save(DaoModel model) throws DatabaseException;
-	abstract protected boolean delete(DaoModel model) throws DatabaseException;
+	protected String betweenSingleQuotes(String value) {
+		return "'" + value + "'";
+	}
+	
+	abstract protected boolean save(Model model) throws DatabaseException;
+	abstract protected boolean delete(Model model) throws DatabaseException;
 
-	abstract protected int getCount(DaoModel model) throws DatabaseException;
+	abstract protected int getCount(Model model) throws DatabaseException;
 	
 	abstract protected boolean run(String statement) throws DatabaseException;
 	
-	abstract protected String getInsertStatement(DaoModel model, List<String> values);
-	abstract protected String getUpdateStatement(DaoModel model, List<String> fields, List<String> values);
+	abstract protected String getInsertStatement(Model model, List<String> values);
+	abstract protected String getUpdateStatement(Model model, List<String> fields, List<String> values);
+	
+	abstract public String getTable();
+	abstract public List<String> getValues(Model model);
+	abstract public List<String> getFields();
 }

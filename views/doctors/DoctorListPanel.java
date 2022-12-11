@@ -16,7 +16,6 @@ import entrega.models.Doctor;
 import entrega.views.BorderPanelWithTitle;
 
 public class DoctorListPanel extends BorderPanelWithTitle {
-
 	private JTable table;
 	private DoctorTableModel model;
 	

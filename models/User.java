@@ -1,9 +1,5 @@
 package entrega.models;
 
-import java.util.Arrays;
-import java.util.List;
-
-import entrega.contracts.DaoModel;
 import entrega.contracts.Model;
 
 /*
@@ -17,7 +13,7 @@ import entrega.contracts.Model;
  	);
  */
 
-public class User extends Model implements DaoModel {
+public class User extends Model {
 	private String firstName;
 	private String lastName;
 	private String idNumber;
@@ -102,25 +98,6 @@ public class User extends Model implements DaoModel {
 	
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public String getTable() {
-		return "users";
-	}
-	
-	public List<String> getValues() {
-		return Arrays.asList(new String[] {
-			this.getId().toString(),
-			this.betweenSingleQuotes(this.getFirstName()), 
-			this.betweenSingleQuotes(this.getLastName()), 
-			this.betweenSingleQuotes(this.getIdNumber()), 
-			this.betweenSingleQuotes(this.getEmail()),
-			this.betweenSingleQuotes(this.getHashedPassword())
-		});
-	}
-
-	public List<String> getFields() {
-		return Arrays.asList(new String[] {"id", "firstName", "lastName", "idNumber", "email", "password"});
 	}
 }
  
