@@ -8,6 +8,8 @@ import entrega.dao.users.UserDao;
 import entrega.exceptions.UserDaoException;
 import entrega.exceptions.ValidationException;
 import entrega.models.User;
+import entrega.validation.LoginValidation;
+import entrega.validation.RegisterValidation;
 import entrega.views.auth.login.LoginFormPanel;
 import entrega.views.auth.register.RegisterFormPanel;
 
@@ -47,15 +49,17 @@ public class AuthService implements Service {
 		SwingWorker<Void, String> swingWorker = new SwingWorker<Void, String>() {
 			@Override
 			protected Void doInBackground() throws Exception {
+				String idNumber = loginFormPanel.getIdNumber();
+				String password = loginFormPanel.getPassword();
+				
+				LoginValidation validation = new LoginValidation(idNumber, password);
+				
 				try {
-					loginFormPanel.validateInputs();
+					validation.validate();
 				} catch (ValidationException e) {
 					frontService.showWarning(e.getMessage());
 					return null;
 				}
-				
-				String idNumber = loginFormPanel.getIdNumber();
-				String password = loginFormPanel.getPassword();
 				
 				frontService.setLoading(true);
 				
@@ -91,18 +95,20 @@ public class AuthService implements Service {
 		SwingWorker<Void, String> swingWorker = new SwingWorker<Void, String>() {
 			@Override
 			protected Void doInBackground() throws Exception {
-				try {
-					registerFormPanel.validateInputs();
-				} catch (ValidationException e) {
-					frontService.showWarning(e.getMessage());
-					return null;
-				}
-				
 				String firstName = registerFormPanel.getFirstName();
 				String lastName = registerFormPanel.getLastName();
 				String idNumber = registerFormPanel.getIdNumber();
 				String email = registerFormPanel.getEmail();
 				String password = registerFormPanel.getPassword();
+				
+				RegisterValidation validation = new RegisterValidation(firstName, lastName, idNumber, email, password);
+				
+				try {
+					validation.validate();
+				} catch (ValidationException e) {
+					frontService.showWarning(e.getMessage());
+					return null;
+				}
 				
 				frontService.setLoading(true);
 				

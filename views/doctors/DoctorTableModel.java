@@ -7,6 +7,7 @@ import javax.swing.table.AbstractTableModel;
 
 import entrega.models.Doctor;
 
+@SuppressWarnings("serial")
 public class DoctorTableModel extends AbstractTableModel {
 	private static final int ID_COLUMN = 0;
 	private static final int FIRSTNAME_COLUMN = 1;

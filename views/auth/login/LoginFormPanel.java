@@ -1,123 +1,64 @@
 package entrega.views.auth.login;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 
-import entrega.exceptions.ValidationException;
 import entrega.services.AuthService;
-import entrega.validation.Validator;
-import entrega.validation.WithValidateInputs;
-import entrega.validation.rules.CharCountBetweenRule;
-import entrega.views.BorderPanelWithTitle;
+import entrega.validation.LoginValidation;
+import entrega.views.FormPanel;
+import entrega.views.InputPanel;
+import entrega.views.PasswordInputPanel;
 
-public class LoginFormPanel extends BorderPanelWithTitle implements WithValidateInputs {
-	private JTextField idNumberField;
-	private JPasswordField passwordField;
-	
-	private String idNumberText = "Documento";
-	private String passwordText = "Contraseña";
-	
+@SuppressWarnings("serial")
+public class LoginFormPanel extends FormPanel {
+	private InputPanel idNumberInput;
+	private PasswordInputPanel passwordInput;
+			
 	public LoginFormPanel(AuthService service) {
-		super("Login", service);
-		
-		this.build();
+		super("Ingresar", service);
 	}
 	
 	public String getIdNumber() {
-		return this.idNumberField.getText().trim();
+		return this.idNumberInput.getTrimmedFieldText();
 	}
 	
-	@SuppressWarnings("deprecation")
 	public String getPassword() {
-		return this.passwordField.getText();
+		return this.passwordInput.getFieldText();
 	}
 	
-	public void validateInputs() throws ValidationException {
-		this.getIdNumberValidator().validate(this.idNumberText);
-	}
-	
-	
-	private Validator getIdNumberValidator() {
-		return (new Validator())
-			.addRule(new CharCountBetweenRule(this.getIdNumber(), 7, 8));
-	}
-	
-	public void build() {
-		this.buildBody();
-		this.buildFooter();
-	}
-	
-	private void buildBody() {
-		JPanel panel = new JPanel();
+	protected void buildCenter(JPanel panel) {
+		this.idNumberInput = new InputPanel(LoginValidation.ID_NUMBER_LABEL);
+		this.passwordInput = new PasswordInputPanel(LoginValidation.PASSWORD_LABEL);
 		
-		panel.setLayout(new GridLayout(2,2));
-		
-		JLabel idNumberLabel = new JLabel(this.idNumberText);
-		JLabel passwordLabel = new JLabel(this.passwordText);
-		
-		this.idNumberField = new JTextField("");
-		this.passwordField = new JPasswordField("");
-		
-		panel.add(idNumberLabel);
-		panel.add(idNumberField);
-		
-		panel.add(passwordLabel);
-		panel.add(passwordField);
-		
-		this.add(panel, BorderLayout.CENTER);
+		panel.add(this.idNumberInput);
+		panel.add(this.passwordInput);
 	 }
 	
-	private void buildFooter() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		
-		JButton loginBtn = new JButton("Ingresar");
-		JButton resetBtn = new JButton("Limpiar campos");
-		JButton registerBtn = new JButton("Registrarse");
-
-		loginBtn.addActionListener(
-			new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					AuthService service = (AuthService) getService();
-					service.login();
-				}
+	protected void buildSouth(JPanel panel) {
+		panel.add(this.createButton("Ingresar", new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				AuthService service = (AuthService) getService();
+				service.login();
 			}
-		);
+		}));
 		
-		resetBtn.addActionListener(
-			new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					idNumberField.setText("");
-					passwordField.setText("");
-				}
+		panel.add(this.createButton("Limpiar campos", new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				idNumberInput.setFieldText("");
+				passwordInput.setFieldText("");
 			}
-		);
+		}));
 		
-		registerBtn.addActionListener(
-			new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					AuthService service = (AuthService) getService();
-					service.showRegisterFormPanel();
-				}
+		panel.add(this.createButton("Registrarse", new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				AuthService service = (AuthService) getService();
+				service.showRegisterFormPanel();
 			}
-		);
-		
-		panel.add(loginBtn);
-		panel.add(resetBtn);
-		panel.add(registerBtn);
-		
-		this.add(panel, BorderLayout.SOUTH);
+		}));
 	 }
 }

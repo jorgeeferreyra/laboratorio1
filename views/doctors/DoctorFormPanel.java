@@ -1,42 +1,27 @@
 package entrega.views.doctors;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
-import entrega.exceptions.ValidationException;
 import entrega.models.Doctor;
 import entrega.services.DoctorService;
-import entrega.validation.Validator;
-import entrega.validation.WithValidateInputs;
-import entrega.validation.rules.CharCountBetweenRule;
-import entrega.validation.rules.EmailRule;
-import entrega.views.BorderPanelWithTitle;
+import entrega.validation.DoctorValidation;
+import entrega.views.FormPanel;
+import entrega.views.InputPanel;
 
-public class DoctorFormPanel extends BorderPanelWithTitle implements WithValidateInputs {
+@SuppressWarnings("serial")
+public class DoctorFormPanel extends FormPanel {
 	private Doctor doctor;
 	
-	private JTextField firstNameField;
-	private JTextField lastNameField;
-	private JTextField phoneField;
-	private JTextField emailField;
-	
-	private String firstNameText = "Nombre";
-	private String lastNameText = "Apellido";
-	private String phoneText = "Teléfono";
-	private String emailText = "Correo Electrónico";
+	private InputPanel firstNameInput;
+	private InputPanel lastNameInput;
+	private InputPanel phoneInput;
+	private InputPanel emailInput;
 	
 	public DoctorFormPanel(DoctorService service) {
 		super("Nuevo Médico", service);
-		
-		this.build();
 	}
 	
 	public Doctor getDoctor() {
@@ -50,134 +35,65 @@ public class DoctorFormPanel extends BorderPanelWithTitle implements WithValidat
 		
 		this.setTitle(isEditing ? "Editar Médico" : "Nuevo Médico");
 		
-		this.firstNameField.setText(isEditing ? doctor.getFirstName() : "");
-		this.lastNameField.setText(isEditing ? doctor.getLastName() : "");
-		this.phoneField.setText(isEditing ? doctor.getPhone() : "");
-		this.emailField.setText(isEditing ? doctor.getEmail() : "");
+		this.firstNameInput.setFieldText(isEditing ? doctor.getFirstName() : "");
+		this.lastNameInput.setFieldText(isEditing ? doctor.getLastName() : "");
+		this.phoneInput.setFieldText(isEditing ? doctor.getPhone() : "");
+		this.emailInput.setFieldText(isEditing ? doctor.getEmail() : "");
 	}
 	
 	public String getFirstName() {
-		return this.firstNameField.getText().trim();
+		return this.firstNameInput.getTrimmedFieldText();
 	}
 	
 	public String getLastName() {
-		return this.lastNameField.getText().trim();
+		return this.lastNameInput.getTrimmedFieldText();
 	}
 	
 	public String getPhone() {
-		return this.phoneField.getText().trim();
+		return this.phoneInput.getTrimmedFieldText();
 	}
 	
 	public String getEmail() {
-		return this.emailField.getText().trim();
+		return this.emailInput.getTrimmedFieldText();
 	}
-	
-	public void build() {
-		this.buildBody();
-		this.buildFooter();
-	}
-	
-	public void validateInputs() throws ValidationException {
-		this.getFirstNameValidator().validate(this.firstNameText);
-		this.getLastNameValidator().validate(this.lastNameText);
-		this.getPhoneValidator().validate(this.phoneText);
-		this.getEmailValidator().validate(this.emailText);
-	}
-	
-	private Validator getFirstNameValidator() {
-		return (new Validator())
-			.addRule(new CharCountBetweenRule(this.getFirstName(), 3, 15));
-	}
-	
-	private Validator getLastNameValidator() {
-		return (new Validator())
-			.addRule(new CharCountBetweenRule(this.getLastName(), 3, 15));
-	}
-	
-	private Validator getPhoneValidator() {
-		return (new Validator())
-			.addRule(new CharCountBetweenRule(this.getPhone(), 7, 8));
-	}
-	
-	private Validator getEmailValidator() {
-		return (new Validator())
-			.addRule(new EmailRule(this.getEmail()));
-	}
-	
-	private void buildBody() {
-		JPanel panel = new JPanel();
 		
-		panel.setLayout(new GridLayout(5,5));
+	protected void buildCenter(JPanel panel) {
+		this.firstNameInput = new InputPanel(DoctorValidation.FIRST_NAME_LABEL);
+		this.lastNameInput = new InputPanel(DoctorValidation.LAST_NAME_LABEL);
+		this.phoneInput = new InputPanel(DoctorValidation.PHONE_LABEL);
+		this.emailInput = new InputPanel(DoctorValidation.EMAIL_LABEL);
 		
-		JLabel firstNameLabel = new JLabel(this.firstNameText);
-		JLabel lastNameLabel = new JLabel(this.lastNameText);
-		JLabel phoneLabel = new JLabel(this.phoneText);
-		JLabel emailLabel = new JLabel(this.emailText);
-				
-		this.firstNameField = new JTextField("");
-		this.lastNameField = new JTextField("");
-		this.phoneField = new JTextField("");
-		this.emailField = new JTextField("");
-		
-		panel.add(firstNameLabel);
-		panel.add(this.firstNameField);
-		
-		panel.add(lastNameLabel);
-		panel.add(this.lastNameField);
-		
-		panel.add(phoneLabel);
-		panel.add(this.phoneField);
-		
-		panel.add(emailLabel);
-		panel.add(this.emailField);
-		
-		this.add(panel, BorderLayout.CENTER);
+		panel.add(this.firstNameInput);
+		panel.add(this.lastNameInput);
+		panel.add(this.phoneInput);
+		panel.add(this.emailInput);
 	 }
 	
-	private void buildFooter() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		
-		JButton saveBtn = new JButton("Guardar");
-		JButton resetBtn = new JButton("Limpiar campos");
-		JButton cancelBtn = new JButton("Cancelar");
-
-		saveBtn.addActionListener(
-			new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					DoctorService service = (DoctorService) getService();
-					service.saveDoctor();
-				}
+	protected void buildSouth(JPanel panel) {
+		panel.add(this.createButton("Guardar", new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				DoctorService service = (DoctorService) getService();
+				service.saveDoctor();
 			}
-		);
+		}));
 		
-		resetBtn.addActionListener(
-			new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					firstNameField.setText("");
-					lastNameField.setText("");
-					phoneField.setText("");
-					emailField.setText("");
-				}
+		panel.add(this.createButton("Limpiar campos", new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				firstNameInput.setFieldText("");
+				lastNameInput.setFieldText("");
+				phoneInput.setFieldText("");
+				emailInput.setFieldText("");
 			}
-		);
+		}));
 		
-		cancelBtn.addActionListener(
-			new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					DoctorService service = (DoctorService) getService();
-					service.showDoctorListPanel();
-				}
+		panel.add(this.createButton("Cancelar", new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				DoctorService service = (DoctorService) getService();
+				service.showDoctorListPanel();
 			}
-		);
-
-		panel.add(saveBtn);
-		panel.add(resetBtn);
-		panel.add(cancelBtn);
-		
-		this.add(panel, BorderLayout.SOUTH);
+		}));
 	 }
 }

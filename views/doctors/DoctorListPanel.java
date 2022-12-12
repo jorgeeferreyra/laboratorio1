@@ -15,6 +15,7 @@ import entrega.models.Doctor;
 import entrega.services.DoctorService;
 import entrega.views.BorderPanelWithTitle;
 
+@SuppressWarnings("serial")
 public class DoctorListPanel extends BorderPanelWithTitle {
 	private JTable table;
 	private DoctorTableModel model;

@@ -8,6 +8,7 @@ import entrega.dao.doctors.DoctorDao;
 import entrega.exceptions.DoctorDaoException;
 import entrega.exceptions.ValidationException;
 import entrega.models.Doctor;
+import entrega.validation.DoctorValidation;
 import entrega.views.doctors.DoctorFormPanel;
 import entrega.views.doctors.DoctorListPanel;
 
@@ -94,17 +95,24 @@ public class DoctorService implements Service {
 		SwingWorker<Void, String> swingWorker = new SwingWorker<Void, String>() {
 			@Override
 			protected Void doInBackground() throws Exception {
-				try {					
-					doctorFormPanel.validateInputs();
-				} catch (ValidationException e) {
-					frontService.showWarning(e.getMessage());
-					return null;
-				}
-				
 				String firstName = doctorFormPanel.getFirstName();
 				String lastName = doctorFormPanel.getLastName();
 				String phone = doctorFormPanel.getPhone();
 				String email = doctorFormPanel.getEmail();
+				
+				DoctorValidation validation = new DoctorValidation(
+					firstName,
+					lastName,
+					phone,
+					email
+				);
+				
+				try {
+					validation.validate();
+				} catch (ValidationException e) {
+					frontService.showWarning(e.getMessage());
+					return null;
+				}
 				
 				frontService.setLoading(true);
 				

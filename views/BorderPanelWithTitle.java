@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 
 import entrega.services.Service;
 
+@SuppressWarnings("serial")
 public class BorderPanelWithTitle extends JPanel {
 	private Service service;
 	private JLabel titleLabel;
