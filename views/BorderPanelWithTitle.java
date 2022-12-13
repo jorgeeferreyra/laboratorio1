@@ -2,7 +2,9 @@ package entrega.views;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -37,5 +39,14 @@ public class BorderPanelWithTitle extends JPanel {
 		JLabel label = new JLabel(text);
 		label.setBorder(new EmptyBorder(5, 5, 5, 5));
 		return label;
+	}
+
+	
+	protected JButton createButton(String text, ActionListener actionListener) {
+		JButton button = new JButton(text);
+
+		button.addActionListener(actionListener);
+		
+		return button;
 	}
 }

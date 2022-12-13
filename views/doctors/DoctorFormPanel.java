@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
-import entrega.models.Doctor;
+import entrega.entities.Doctor;
 import entrega.services.DoctorService;
 import entrega.validation.DoctorValidation;
 import entrega.views.FormPanel;

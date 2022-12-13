@@ -2,8 +2,8 @@ package entrega.dao.users;
 
 import java.util.List;
 
+import entrega.entities.User;
 import entrega.exceptions.UserDaoException;
-import entrega.models.User;
 
 public interface UserDao {
 	public List<User> getAll() throws UserDaoException;

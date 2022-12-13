@@ -8,10 +8,10 @@ import java.util.List;
 
 import entrega.dao.H2Dao;
 import entrega.database.H2Database;
+import entrega.entities.Doctor;
+import entrega.entities.Entity;
 import entrega.exceptions.DatabaseException;
 import entrega.exceptions.DoctorDaoException;
-import entrega.models.Doctor;
-import entrega.models.Model;
 
 public class DoctorH2Dao extends H2Dao implements DoctorDao {
 	public DoctorH2Dao(H2Database database) {
@@ -111,7 +111,7 @@ public class DoctorH2Dao extends H2Dao implements DoctorDao {
 		return "doctors";
 	}
 	
-	public List<String> getValues(Model model) {
+	public List<String> getValues(Entity model) {
 		Doctor doctor = (Doctor) model;
 		
 		return Arrays.asList(new String[] {

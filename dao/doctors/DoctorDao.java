@@ -2,8 +2,8 @@ package entrega.dao.doctors;
 
 import java.util.List;
 
+import entrega.entities.Doctor;
 import entrega.exceptions.DoctorDaoException;
-import entrega.models.Doctor;
 
 public interface DoctorDao {
 	public List<Doctor> getAll(int userId) throws DoctorDaoException;

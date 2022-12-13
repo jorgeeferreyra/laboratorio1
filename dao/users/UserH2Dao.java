@@ -8,10 +8,10 @@ import java.util.List;
 
 import entrega.dao.H2Dao;
 import entrega.database.H2Database;
+import entrega.entities.Entity;
+import entrega.entities.User;
 import entrega.exceptions.DatabaseException;
 import entrega.exceptions.UserDaoException;
-import entrega.models.Model;
-import entrega.models.User;
 
 public class UserH2Dao extends H2Dao implements UserDao {
 	
@@ -149,7 +149,7 @@ public class UserH2Dao extends H2Dao implements UserDao {
 		return "users";
 	}
 	
-	public List<String> getValues(Model model) {
+	public List<String> getValues(Entity model) {
 		User user = (User) model;
 		
 		return Arrays.asList(new String[] {

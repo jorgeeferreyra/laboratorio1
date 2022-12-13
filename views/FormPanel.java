@@ -2,10 +2,8 @@ package entrega.views;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import entrega.services.Service;
@@ -30,14 +28,6 @@ abstract public class FormPanel extends BorderPanelWithTitle {
 				
 		this.add(center, BorderLayout.CENTER);
 		this.add(south, BorderLayout.SOUTH);
-	}
-	
-	protected JButton createButton(String text, ActionListener actionListener) {
-		JButton button = new JButton(text);
-
-		button.addActionListener(actionListener);
-		
-		return button;
 	}
 
 	protected abstract void buildCenter(JPanel panel);

@@ -8,15 +8,15 @@ import java.util.List;
 
 import entrega.database.Database;
 import entrega.database.H2Database;
+import entrega.entities.Entity;
 import entrega.exceptions.DatabaseException;
-import entrega.models.Model;
 
 abstract public class H2Dao extends Dao {	
 	public H2Dao(H2Database database) {
 		this.setDatabase(database);
 	}
 	
-	public boolean save(Model model) throws DatabaseException {
+	public boolean save(Entity model) throws DatabaseException {
 		if (model.getIsNew()) {
 			model.setId(this.getCount(model));
 		}
@@ -32,7 +32,7 @@ abstract public class H2Dao extends Dao {
 		return success;
 	}
 	
-	public boolean delete(Model model) throws DatabaseException {
+	public boolean delete(Entity model) throws DatabaseException {
 		return this.run("DELETE FROM " + this.getTable() + " WHERE id=" + model.getId().toString());
 	}
 	
@@ -76,24 +76,24 @@ abstract public class H2Dao extends Dao {
 		return result;
 	}
 	
-	private String getInsertStatement(Model model) {
+	private String getInsertStatement(Entity model) {
 		return this.getInsertStatement(model, this.getValues(model));
 	}
 	
-	protected String getInsertStatement(Model model, List<String> values) {
+	protected String getInsertStatement(Entity model, List<String> values) {
 		return "INSERT INTO " + this.getTable() + " VALUES " +
 				"(" + String.join(",", values) + ")";
 	}
 	
-	protected String getUpdateStatement(Model model) {
+	protected String getUpdateStatement(Entity model) {
 		return this.getUpdateStatement(model, this.getFields(), this.getValues(model));
 	}
 	
-	protected String getUpdateStatement(Model model, String field, String value) {
+	protected String getUpdateStatement(Entity model, String field, String value) {
 		return this.getUpdateStatement(model, Arrays.asList(new String[] {field}), Arrays.asList(new String[] {value}));
 	}
 	
-	protected String getUpdateStatement(Model model, List<String> fields, List<String> values) {
+	protected String getUpdateStatement(Entity model, List<String> fields, List<String> values) {
 		List<String> rawSQL = new ArrayList<String>();
 		
 		for (int i=0; i < fields.size(); i++) {
@@ -109,7 +109,7 @@ abstract public class H2Dao extends Dao {
 	}
 	
 	@Override
-	protected int getCount(Model model) throws DatabaseException {	
+	protected int getCount(Entity model) throws DatabaseException {	
 		int result;
 		
 		try {

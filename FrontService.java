@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import entrega.models.User;
+import entrega.entities.User;
 import entrega.services.AuthService;
 import entrega.services.DoctorService;
 import entrega.services.Service;

@@ -1,45 +1,20 @@
 package entrega.views.doctors;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.table.AbstractTableModel;
-
-import entrega.models.Doctor;
+import entrega.entities.Doctor;
+import entrega.views.TableModel;
 
 @SuppressWarnings("serial")
-public class DoctorTableModel extends AbstractTableModel {
+public class DoctorTableModel extends TableModel<Doctor> {
 	private static final int ID_COLUMN = 0;
 	private static final int FIRSTNAME_COLUMN = 1;
 	private static final int LASTNAME_COLUMN = 2;
 	private static final int PHONE_COLUMN = 3;
 	private static final int EMAIL_COLUMN = 4;
 	
-	private String[] titles = {"ID", "Nombre", "Apellido", "Teléfono", "Email"};
-	private List<Doctor> content;
+	protected String[] titles = {"ID", "Nombre", "Apellido", "Teléfono", "Email"};
 	
-	public DoctorTableModel() {
-		this.content = new ArrayList<Doctor>();
-	}
-	
-	public DoctorTableModel(List<Doctor> content) {
-		this.content = content;
-	}
-
-	public int getRowCount() {
-		return this.content.size();
-	}
-
-	public int getColumnCount() {
-		return this.titles.length;
-	}
-	
-	public String getColumnName(int column) {
-		return this.titles[column];
-	}
-
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Doctor doctor = content.get(rowIndex);
+		Doctor doctor = this.getContent().get(rowIndex);
 		
 		switch (columnIndex) {
 			case DoctorTableModel.ID_COLUMN:
@@ -55,13 +30,5 @@ public class DoctorTableModel extends AbstractTableModel {
 			default:
 				return new String("");
 		}
-	}
-	
-	public List<Doctor> getContent() {
-		return this.content;
-	}
-	
-	public void setContent(List<Doctor> content) {
-		this.content = content;
 	}
 }
