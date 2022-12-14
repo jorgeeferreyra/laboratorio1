@@ -6,7 +6,7 @@ import entrega.FrontService;
 import entrega.H2DaoFactory;
 import entrega.dao.users.UserDao;
 import entrega.entities.User;
-import entrega.exceptions.UserDaoException;
+import entrega.exceptions.DaoException;
 import entrega.exceptions.ValidationException;
 import entrega.validation.LoginValidation;
 import entrega.validation.RegisterValidation;
@@ -75,7 +75,7 @@ public class AuthService implements Service {
 						frontService.showWarning("El documento o contraseña no coinciden");
 					}
 					
-				} catch (UserDaoException e) {
+				} catch (DaoException e) {
 					frontService.handleExceptions(e, "Error al iniciar sesión");
 				} finally {
 					frontService.setLoading(false);
@@ -133,7 +133,7 @@ public class AuthService implements Service {
 										
 					frontService.setUser(user);
 					frontService.focusDoctorsService();
-				} catch (UserDaoException e) {
+				} catch (DaoException e) {
 					frontService.handleExceptions(e, "Error al registrar");
 				} finally {
 					frontService.setLoading(false);

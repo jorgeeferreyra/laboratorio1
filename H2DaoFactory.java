@@ -7,8 +7,7 @@ import entrega.dao.users.UserH2Dao;
 import entrega.database.Database;
 import entrega.database.H2Database;
 import entrega.exceptions.DatabaseException;
-import entrega.exceptions.DoctorDaoException;
-import entrega.exceptions.UserDaoException;
+import entrega.exceptions.DaoException;
 
 public class H2DaoFactory {
 	private static Database database;
@@ -24,19 +23,19 @@ public class H2DaoFactory {
 		return H2DaoFactory.database;
 	}
 	
-	public static UserDao getUserDao() throws UserDaoException {
+	public static UserDao getUserDao() throws DaoException {
 		try {
 			return new UserH2Dao((H2Database) H2DaoFactory.getDatabase());
 		} catch (DatabaseException e) {
-			throw new UserDaoException(e.getMessage());
+			throw new DaoException(e.getMessage());
 		}
 	}
 	
-	public static DoctorDao getDoctorDao() throws DoctorDaoException {
+	public static DoctorDao getDoctorDao() throws DaoException {
 		try {
 			return new DoctorH2Dao((H2Database) H2DaoFactory.getDatabase());
 		} catch (DatabaseException e) {
-			throw new DoctorDaoException(e.getMessage());
+			throw new DaoException(e.getMessage());
 		}
 	}
 }

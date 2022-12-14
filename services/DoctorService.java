@@ -1,104 +1,52 @@
 package entrega.services;
 
+import java.util.List;
+
 import javax.swing.SwingWorker;
 
 import entrega.FrontService;
 import entrega.H2DaoFactory;
 import entrega.dao.doctors.DoctorDao;
 import entrega.entities.Doctor;
-import entrega.exceptions.DoctorDaoException;
+import entrega.exceptions.DaoException;
 import entrega.exceptions.ValidationException;
 import entrega.validation.DoctorValidation;
 import entrega.views.doctors.DoctorFormPanel;
 import entrega.views.doctors.DoctorListPanel;
 
-public class DoctorService implements Service {
-	private FrontService frontService;
-	private DoctorListPanel doctorListPanel;
-	private DoctorFormPanel doctorFormPanel;
-	
+public class DoctorService extends EntityService<Doctor> implements Service {	
 	public DoctorService(FrontService frontService) {
-		this.frontService = frontService;
-		this.build();
+		super(frontService);
+		
+		this.setListPanel(new DoctorListPanel(this));
+		this.setFormPanel(new DoctorFormPanel(this));
 	}
 	
-	public void build() {
-		this.doctorListPanel = new DoctorListPanel(this);
-		this.doctorFormPanel = new DoctorFormPanel(this);
-	}
-
 	@Override
 	public void showIndexPanel() {
-		this.showDoctorListPanel();
+		this.showListPanel();
 	}
-	
-	public void showDoctorListPanel() {
-		SwingWorker<Void, String> swingWorker = new SwingWorker<Void, String>() {
-			@Override
-			protected Void doInBackground() throws Exception {
-				try {
-					frontService.setLoading(true);
-					
-					DoctorDao doctorDao = H2DaoFactory.getDoctorDao();
-					
-					doctorListPanel.setContent(doctorDao.getAll(frontService.getUser().getId()));
-					
-					frontService.showPanel(doctorListPanel);
-				} catch (DoctorDaoException e) {
-					frontService.handleExceptions(e, "Error mostrando doctores");
-				} finally {
-					frontService.setLoading(false);
-				}
-				
-				return null;
-			}
-		};
 		
-		swingWorker.execute();
-	}
-	
-	public void showDoctorFormPanel() {	
-		SwingWorker<Void, String> swingWorker = new SwingWorker<Void, String>() {
-			@Override
-			protected Void doInBackground() throws Exception {
-				doctorFormPanel.setDoctor(null);
-				
-				frontService.showPanel(doctorFormPanel);
-				
-				return null;
-			}
-		};
+	protected List<Doctor> getListPanelData() throws DaoException {
+		DoctorDao doctorDao = H2DaoFactory.getDoctorDao();
 		
-		swingWorker.execute();
-	}
-	
-	public void showDoctorFormPanel(Doctor doctor) {	
-		SwingWorker<Void, String> swingWorker = new SwingWorker<Void, String>() {
-			@Override
-			protected Void doInBackground() throws Exception {
-				doctorFormPanel.setDoctor(doctor);
-				
-				frontService.showPanel(doctorFormPanel);
-					
-				return null;
-			}
-		};
-		
-		swingWorker.execute();
+		return doctorDao.getAll(this.getFrontService().getUser().getId());
 	}
 	
 	public void saveDoctor() {
-		if (this.frontService.isLoading()) {
+		if (this.getFrontService().isLoading()) {
 			return;
 		}
 		
 		SwingWorker<Void, String> swingWorker = new SwingWorker<Void, String>() {
 			@Override
 			protected Void doInBackground() throws Exception {
-				String firstName = doctorFormPanel.getFirstName();
-				String lastName = doctorFormPanel.getLastName();
-				String phone = doctorFormPanel.getPhone();
-				String email = doctorFormPanel.getEmail();
+				DoctorFormPanel formPanel = (DoctorFormPanel) getFormPanel();
+				
+				String firstName = formPanel.getFirstName();
+				String lastName = formPanel.getLastName();
+				String phone = formPanel.getPhone();
+				String email = formPanel.getEmail();
 				
 				DoctorValidation validation = new DoctorValidation(
 					firstName,
@@ -110,16 +58,16 @@ public class DoctorService implements Service {
 				try {
 					validation.validate();
 				} catch (ValidationException e) {
-					frontService.showWarning(e.getMessage());
+					getFrontService().showWarning(e.getMessage());
 					return null;
 				}
 				
-				frontService.setLoading(true);
+				getFrontService().setLoading(true);
 				
-				Doctor doctor = doctorFormPanel.getDoctor();
+				Doctor doctor = formPanel.getEntity();
 				
 				if (doctor == null) {
-					doctor = new Doctor(frontService.getUser().getId(), firstName, lastName, phone, email);
+					doctor = new Doctor(getFrontService().getUser().getId(), firstName, lastName, phone, email);
 				} else {
 					doctor.setFirstName(firstName);
 					doctor.setLastName(lastName);
@@ -132,11 +80,11 @@ public class DoctorService implements Service {
 					
 					doctorDao.save(doctor);
 					
-					showDoctorListPanel();
-				} catch (DoctorDaoException e) {
-					frontService.handleExceptions(e, "Error mostrando doctores");
+					showListPanel();
+				} catch (DaoException e) {
+					getFrontService().handleExceptions(e, "Error mostrando doctores");
 				} finally {
-					frontService.setLoading(false);
+					getFrontService().setLoading(false);
 				}
 				
 				return null;
@@ -147,11 +95,11 @@ public class DoctorService implements Service {
 	}
 	
 	public void removeDoctor(Doctor doctor) {
-		if (this.frontService.isLoading()) {
+		if (this.getFrontService().isLoading()) {
 			return;
 		}
 		
-		if (!this.frontService.showConfirm("¿Está seguro que desea eliminar a "+ doctor.getFirstName() + " " + doctor.getLastName() +"?")) {
+		if (!this.getFrontService().showConfirm("¿Está seguro que desea eliminar a "+ doctor.getFirstName() + " " + doctor.getLastName() +"?")) {
 			return;
 		}
 		
@@ -165,11 +113,11 @@ public class DoctorService implements Service {
 					
 					doctorDao.delete(doctor);
 					
-					showDoctorListPanel();
-				} catch (DoctorDaoException e) {
-					frontService.handleExceptions(e, "Error mostrando doctores");
+					showListPanel();
+				} catch (DaoException e) {
+					getFrontService().handleExceptions(e, "Error mostrando doctores");
 				} finally {
-					frontService.setLoading(false);
+					getFrontService().setLoading(false);
 				}
 				
 				return null;

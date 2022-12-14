@@ -8,13 +8,11 @@ import javax.swing.JPanel;
 import entrega.entities.Doctor;
 import entrega.services.DoctorService;
 import entrega.validation.DoctorValidation;
-import entrega.views.FormPanel;
+import entrega.views.EntityFormPanel;
 import entrega.views.InputPanel;
 
 @SuppressWarnings("serial")
-public class DoctorFormPanel extends FormPanel {
-	private Doctor doctor;
-	
+public class DoctorFormPanel extends EntityFormPanel<Doctor> {
 	private InputPanel firstNameInput;
 	private InputPanel lastNameInput;
 	private InputPanel phoneInput;
@@ -23,13 +21,9 @@ public class DoctorFormPanel extends FormPanel {
 	public DoctorFormPanel(DoctorService service) {
 		super("Nuevo Médico", service);
 	}
-	
-	public Doctor getDoctor() {
-		return this.doctor;
-	}
-	
-	public void setDoctor(Doctor doctor) {
-		this.doctor = doctor;
+		
+	public void setEntity(Doctor doctor) {
+		this.entity = doctor;
 		
 		boolean isEditing = doctor instanceof Doctor;
 		
@@ -92,7 +86,7 @@ public class DoctorFormPanel extends FormPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				DoctorService service = (DoctorService) getService();
-				service.showDoctorListPanel();
+				service.showListPanel();
 			}
 		}));
 	 }

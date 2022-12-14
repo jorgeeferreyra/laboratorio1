@@ -11,7 +11,7 @@ import entrega.database.H2Database;
 import entrega.entities.Doctor;
 import entrega.entities.Entity;
 import entrega.exceptions.DatabaseException;
-import entrega.exceptions.DoctorDaoException;
+import entrega.exceptions.DaoException;
 
 public class DoctorH2Dao extends H2Dao implements DoctorDao {
 	public DoctorH2Dao(H2Database database) {
@@ -19,7 +19,7 @@ public class DoctorH2Dao extends H2Dao implements DoctorDao {
 	}
 
 	@Override
-	public List<Doctor> getAll(int userId) throws DoctorDaoException {
+	public List<Doctor> getAll(int userId) throws DaoException {
 		List<Doctor> result = new ArrayList<Doctor>();
 		
 		try {
@@ -36,13 +36,13 @@ public class DoctorH2Dao extends H2Dao implements DoctorDao {
 				));
 			}
 		} catch (SQLException | DatabaseException e) {
-			throw new DoctorDaoException(e.getMessage());
+			throw new DaoException(e.getMessage());
 		} finally {
 			if (this.databaseIsConnected()) {
 				try {
 					this.databaseDisconnect();
 				} catch (DatabaseException e) {
-					throw new DoctorDaoException(e.getMessage());
+					throw new DaoException(e.getMessage());
 				}
 			}
 		}
@@ -51,30 +51,30 @@ public class DoctorH2Dao extends H2Dao implements DoctorDao {
 	}
 
 	@Override
-	public Doctor getById(int id) throws DoctorDaoException {
+	public Doctor getById(int id) throws DaoException {
 		return this.getOneFromQuery("SELECT * FROM " + this.getTable() + " WHERE ID=" + String.valueOf(id));
 	}
 
 	@Override
-	public boolean save(Doctor doctor) throws DoctorDaoException {
+	public boolean save(Doctor doctor) throws DaoException {
 		try {
 			return super.save(doctor);
 		} catch (DatabaseException e) {
-			throw new DoctorDaoException(e.getMessage());
+			throw new DaoException(e.getMessage());
 		}
 	}
 
 	@Override
-	public boolean delete(Doctor doctor) throws DoctorDaoException {
+	public boolean delete(Doctor doctor) throws DaoException {
 		try {
 			return super.delete(doctor);
 		} catch (DatabaseException e) {
-			throw new DoctorDaoException(e.getMessage());
+			throw new DaoException(e.getMessage());
 		}
 	}
 	
 
-	private Doctor getOneFromQuery(String query) throws DoctorDaoException {
+	private Doctor getOneFromQuery(String query) throws DaoException {
 		Doctor doctor = null;
 		
 		try {
@@ -91,13 +91,13 @@ public class DoctorH2Dao extends H2Dao implements DoctorDao {
 					)
 				: null;
 		} catch (SQLException | DatabaseException e) {
-			throw new DoctorDaoException(e.getMessage());
+			throw new DaoException(e.getMessage());
 		} finally {
 			if (this.databaseIsConnected()) {
 				try {
 					this.databaseDisconnect();
 				} catch (DatabaseException e) {
-					throw new DoctorDaoException(e.getMessage());
+					throw new DaoException(e.getMessage());
 				}
 			}
 		}

@@ -11,13 +11,13 @@ import javax.swing.JTable;
 import entrega.services.Service;
 
 @SuppressWarnings("serial")
-public abstract class ListPanel<T> extends BorderPanelWithTitle {
+public abstract class EntityListPanel<T> extends BorderPanelWithTitle {
 	private JTable table;
 	private TableModel<T> model;
 	
 	private JScrollPane scrollPane;
 	
-	public ListPanel(String title, Service service, TableModel<T> model) {
+	public EntityListPanel(String title, Service service, TableModel<T> model) {
 		super(title, service);
 		this.model = model;
 		this.build();

@@ -11,7 +11,7 @@ import entrega.database.H2Database;
 import entrega.entities.Entity;
 import entrega.entities.User;
 import entrega.exceptions.DatabaseException;
-import entrega.exceptions.UserDaoException;
+import entrega.exceptions.DaoException;
 
 public class UserH2Dao extends H2Dao implements UserDao {
 	
@@ -20,7 +20,7 @@ public class UserH2Dao extends H2Dao implements UserDao {
 	}
 
 	@Override
-	public List<User> getAll() throws UserDaoException {		
+	public List<User> getAll() throws DaoException {		
 		List<User> result = new ArrayList<User>();
 		
 		try {
@@ -37,13 +37,13 @@ public class UserH2Dao extends H2Dao implements UserDao {
 				));
 			}
 		} catch (SQLException | DatabaseException e) {
-			throw new UserDaoException(e.getMessage());
+			throw new DaoException(e.getMessage());
 		} finally {
 			if (this.databaseIsConnected()) {
 				try {
 					this.databaseDisconnect();
 				} catch (DatabaseException e) {
-					throw new UserDaoException(e.getMessage());
+					throw new DaoException(e.getMessage());
 				}
 			}
 		}
@@ -52,40 +52,40 @@ public class UserH2Dao extends H2Dao implements UserDao {
 	}
 
 	@Override
-	public User getById(int id) throws UserDaoException {
+	public User getById(int id) throws DaoException {
 		return this.getOneFromQuery("SELECT * FROM " + this.getTable() + " WHERE ID=" + String.valueOf(id));
 	}
 
 	@Override
-	public User getByIdNumberAndPassword(String idNumber, String password) throws UserDaoException {
+	public User getByIdNumberAndPassword(String idNumber, String password) throws DaoException {
 		return this.getOneFromQuery("SELECT * FROM " + this.getTable() + " WHERE IDNUMBER='" + idNumber + "' AND PASSWORD='" + password + "'");
 	}
 
 	@Override
-	public User getByIdNumber(String idNumber) throws UserDaoException {
+	public User getByIdNumber(String idNumber) throws DaoException {
 		return this.getOneFromQuery("SELECT * FROM " + this.getTable() + " WHERE IDNUMBER='" + idNumber + "'");
 	}
 
 	@Override
-	public User getByEmail(String email) throws UserDaoException {
+	public User getByEmail(String email) throws DaoException {
 		return this.getOneFromQuery("SELECT * FROM " + this.getTable() + " WHERE EMAIL='" + email + "'");
 	}
 
 	@Override
-	public boolean save(User user) throws UserDaoException {
+	public boolean save(User user) throws DaoException {
 		try {
 			return super.save(user);
 		} catch (DatabaseException e) {
-			throw new UserDaoException(e.getMessage());
+			throw new DaoException(e.getMessage());
 		}
 	}
 
 	@Override
-	public boolean delete(User user) throws UserDaoException {
+	public boolean delete(User user) throws DaoException {
 		try {
 			return super.delete(user);
 		} catch (DatabaseException e) {
-			throw new UserDaoException(e.getMessage());
+			throw new DaoException(e.getMessage());
 		}
 	}
 
@@ -96,7 +96,7 @@ public class UserH2Dao extends H2Dao implements UserDao {
 	}
 
 	@Override
-	public boolean changePassword(User user, String newPassword) throws UserDaoException {
+	public boolean changePassword(User user, String newPassword) throws DaoException {
 		// TODO: encrypt password
 		
 		boolean success;
@@ -104,7 +104,7 @@ public class UserH2Dao extends H2Dao implements UserDao {
 		try {
 			success = this.run(this.getUpdateStatement(user, "password", newPassword));
 		} catch (DatabaseException e) {
-			throw new UserDaoException(e.getMessage());
+			throw new DaoException(e.getMessage());
 		}
 		
 		if (success) {
@@ -114,7 +114,7 @@ public class UserH2Dao extends H2Dao implements UserDao {
 		return success;
 	}
 	
-	private User getOneFromQuery(String query) throws UserDaoException {
+	private User getOneFromQuery(String query) throws DaoException {
 		User user = null;
 		
 		try {
@@ -131,13 +131,13 @@ public class UserH2Dao extends H2Dao implements UserDao {
 					)
 				: null;
 		} catch (SQLException | DatabaseException e) {
-			throw new UserDaoException(e.getMessage());
+			throw new DaoException(e.getMessage());
 		} finally {
 			if (this.databaseIsConnected()) {
 				try {
 					this.databaseDisconnect();
 				} catch (DatabaseException e) {
-					throw new UserDaoException(e.getMessage());
+					throw new DaoException(e.getMessage());
 				}
 			}
 		}

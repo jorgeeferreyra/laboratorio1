@@ -7,10 +7,10 @@ import javax.swing.JPanel;
 
 import entrega.entities.Doctor;
 import entrega.services.DoctorService;
-import entrega.views.ListPanel;
+import entrega.views.EntityListPanel;
 
 @SuppressWarnings("serial")
-public class DoctorListPanel extends ListPanel<Doctor> {
+public class DoctorListPanel extends EntityListPanel<Doctor> {
 	public DoctorListPanel(DoctorService service) {
 		super("Médicos", service, new DoctorTableModel());
 	}
@@ -20,7 +20,7 @@ public class DoctorListPanel extends ListPanel<Doctor> {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				DoctorService service = (DoctorService) getService();
-				service.showDoctorFormPanel();
+				service.showFormPanel();
 			}
 		}));
 		
@@ -32,7 +32,7 @@ public class DoctorListPanel extends ListPanel<Doctor> {
 				if (doctorIndex > -1) {
 					Doctor doctor = getModel().getContent().get(doctorIndex);
 					DoctorService service = (DoctorService) getService();
-					service.showDoctorFormPanel(doctor);
+					service.showFormPanel(doctor);
 				}
 			}
 		}));

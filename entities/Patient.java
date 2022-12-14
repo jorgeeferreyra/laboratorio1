@@ -1,7 +1,7 @@
 package entrega.entities;
 
 /*
- 	CREATE TABLE DOCTORS(
+ 	CREATE TABLE PATIENTS(
  		ID INT PRIMARY KEY,
  		USER_ID INT,
  		FIRSTNAME VARCHAR(255),

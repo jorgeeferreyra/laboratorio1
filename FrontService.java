@@ -32,18 +32,15 @@ public class FrontService implements Service {
 	
 	public FrontService() {
 		this.setLoading(true);
-		this.build();
-		this.setLoading(false);
-	}
-
-	@Override
-	public void build() {
+		
 		this.authService = new AuthService(this);
 		this.doctorService = new DoctorService(this);
 		
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
+		
+		this.setLoading(false);
 	}
 
 	@Override

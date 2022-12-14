@@ -10,6 +10,7 @@ import entrega.services.Service;
 
 @SuppressWarnings("serial")
 abstract public class FormPanel extends BorderPanelWithTitle {
+
 	protected FormPanel(String title, Service service) {
 		super(title, service);
 		
