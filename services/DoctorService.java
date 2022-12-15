@@ -2,8 +2,6 @@ package entrega.services;
 
 import java.util.List;
 
-import javax.swing.SwingWorker;
-
 import entrega.FrontService;
 import entrega.H2DaoFactory;
 import entrega.dao.doctors.DoctorDao;
@@ -33,97 +31,48 @@ public class DoctorService extends EntityService<Doctor> implements Service {
 		return doctorDao.getAll(this.getFrontService().getUser().getId());
 	}
 	
-	public void saveDoctor() {
-		if (this.getFrontService().isLoading()) {
-			return;
-		}
+	protected void persistEntity() throws DaoException, ValidationException {
+		DoctorFormPanel formPanel = (DoctorFormPanel) getFormPanel();
 		
-		SwingWorker<Void, String> swingWorker = new SwingWorker<Void, String>() {
-			@Override
-			protected Void doInBackground() throws Exception {
-				DoctorFormPanel formPanel = (DoctorFormPanel) getFormPanel();
-				
-				String firstName = formPanel.getFirstName();
-				String lastName = formPanel.getLastName();
-				String phone = formPanel.getPhone();
-				String email = formPanel.getEmail();
-				
-				DoctorValidation validation = new DoctorValidation(
-					firstName,
-					lastName,
-					phone,
-					email
-				);
-				
-				try {
-					validation.validate();
-				} catch (ValidationException e) {
-					getFrontService().showWarning(e.getMessage());
-					return null;
-				}
-				
-				getFrontService().setLoading(true);
-				
-				Doctor doctor = formPanel.getEntity();
-				
-				if (doctor == null) {
-					doctor = new Doctor(getFrontService().getUser().getId(), firstName, lastName, phone, email);
-				} else {
-					doctor.setFirstName(firstName);
-					doctor.setLastName(lastName);
-					doctor.setPhone(phone);
-					doctor.setEmail(email);
-				}
+		String firstName = formPanel.getFirstName();
+		String lastName = formPanel.getLastName();
+		String phone = formPanel.getPhone();
+		String email = formPanel.getEmail();
+		
+		DoctorValidation validation = new DoctorValidation(
+			firstName,
+			lastName,
+			phone,
+			email
+		);
 
-				try {
-					DoctorDao doctorDao = H2DaoFactory.getDoctorDao();
-					
-					doctorDao.save(doctor);
-					
-					showListPanel();
-				} catch (DaoException e) {
-					getFrontService().handleExceptions(e, "Error mostrando doctores");
-				} finally {
-					getFrontService().setLoading(false);
-				}
-				
-				return null;
-			}
-		};
+		validation.validate();
+						
+		Doctor doctor = formPanel.getEntity();
 		
-		swingWorker.execute();
+		if (doctor == null) {
+			doctor = new Doctor(getFrontService().getUser().getId(), firstName, lastName, phone, email);
+		} else {
+			doctor.setFirstName(firstName);
+			doctor.setLastName(lastName);
+			doctor.setPhone(phone);
+			doctor.setEmail(email);
+		}
+
+		DoctorDao doctorDao = H2DaoFactory.getDoctorDao();
+		
+		doctorDao.save(doctor);
 	}
 	
-	public void removeDoctor(Doctor doctor) {
-		if (this.getFrontService().isLoading()) {
-			return;
-		}
-		
+	protected void deleteEntity(Doctor doctor) throws DaoException {
 		if (!this.getFrontService().showConfirm("¿Está seguro que desea eliminar a "+ doctor.getFirstName() + " " + doctor.getLastName() +"?")) {
 			return;
 		}
 		
-		SwingWorker<Void, String> swingWorker = new SwingWorker<Void, String>() {
-			@Override
-			protected Void doInBackground() throws Exception {
-				try {
-					DoctorDao doctorDao = H2DaoFactory.getDoctorDao();
-							
-					// TODO: chequear que el doctor no tenga turnos asociados
-					
-					doctorDao.delete(doctor);
-					
-					showListPanel();
-				} catch (DaoException e) {
-					getFrontService().handleExceptions(e, "Error mostrando doctores");
-				} finally {
-					getFrontService().setLoading(false);
-				}
-				
-				return null;
-			}
-		};
+		DoctorDao doctorDao = H2DaoFactory.getDoctorDao();
 		
-		swingWorker.execute();
+		// TODO: chequear que el doctor no tenga turnos asociados
+		
+		doctorDao.delete(doctor);
 	}
 }

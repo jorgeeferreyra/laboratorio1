@@ -45,7 +45,7 @@ public class DoctorListPanel extends EntityListPanel<Doctor> {
 				if (doctorIndex > -1) {
 					Doctor doctor = getModel().getContent().get(doctorIndex);
 					DoctorService service = (DoctorService) getService();
-					service.removeDoctor(doctor);
+					service.removeEntity(doctor);
 				}
 			}
 		}));

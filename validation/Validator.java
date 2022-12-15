@@ -3,7 +3,7 @@ package entrega.validation;
 import java.util.ArrayList;
 
 import entrega.exceptions.ValidationException;
-import entrega.validation.rules.interfaces.Rule;
+import entrega.validation.rules.Rule;
 
 public class Validator {
 	private ArrayList<Rule> rules = new ArrayList<Rule>();

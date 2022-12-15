@@ -68,7 +68,7 @@ public class DoctorFormPanel extends EntityFormPanel<Doctor> {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				DoctorService service = (DoctorService) getService();
-				service.saveDoctor();
+				service.saveEntity();
 			}
 		}));
 		

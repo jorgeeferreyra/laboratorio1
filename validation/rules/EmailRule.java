@@ -3,7 +3,6 @@ package entrega.validation.rules;
 import java.util.regex.Pattern;
 
 import entrega.exceptions.ValidationException;
-import entrega.validation.rules.interfaces.Rule;
 
 public class EmailRule implements Rule {
 	private String target;

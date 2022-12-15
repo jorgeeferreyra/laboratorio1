@@ -1,7 +1,6 @@
 package entrega.validation.rules;
 
 import entrega.exceptions.ValidationException;
-import entrega.validation.rules.interfaces.Rule;
 
 public class CharCountBetweenRule implements Rule {
 	private String target;

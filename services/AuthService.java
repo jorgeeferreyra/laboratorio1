@@ -10,8 +10,8 @@ import entrega.exceptions.DaoException;
 import entrega.exceptions.ValidationException;
 import entrega.validation.LoginValidation;
 import entrega.validation.RegisterValidation;
-import entrega.views.auth.login.LoginFormPanel;
-import entrega.views.auth.register.RegisterFormPanel;
+import entrega.views.auth.LoginFormPanel;
+import entrega.views.auth.RegisterFormPanel;
 
 public class AuthService implements Service {
 	private FrontService frontService;

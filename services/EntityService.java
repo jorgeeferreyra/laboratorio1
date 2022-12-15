@@ -6,6 +6,7 @@ import javax.swing.SwingWorker;
 
 import entrega.FrontService;
 import entrega.exceptions.DaoException;
+import entrega.exceptions.ValidationException;
 import entrega.views.EntityFormPanel;
 import entrega.views.EntityListPanel;
 
@@ -71,6 +72,58 @@ abstract public class EntityService<T> implements Service {
 		swingWorker.execute();
 	}
 	
+	public void saveEntity() {
+		if (this.getFrontService().isLoading()) {
+			return;
+		}
+		
+		this.getFrontService().setLoading(true);
+		
+		SwingWorker<Void, String> swingWorker = new SwingWorker<Void, String>() {
+			@Override
+			protected Void doInBackground() throws Exception {			
+				try {
+					persistEntity();
+				} catch (DaoException|ValidationException e) {
+					getFrontService().handleExceptions(e, "Error guardando la entidad");
+				} finally {
+					getFrontService().setLoading(false);
+				}
+				
+				return null;
+			}
+		};
+		
+		swingWorker.execute();
+	}
+	
+	public void removeEntity(T entity) {
+		if (this.getFrontService().isLoading()) {
+			return;
+		}
+
+		getFrontService().setLoading(true);
+		
+		SwingWorker<Void, String> swingWorker = new SwingWorker<Void, String>() {
+			@Override
+			protected Void doInBackground() throws Exception {
+				try {
+					deleteEntity(entity);
+				} catch (DaoException e) {
+					getFrontService().handleExceptions(e, "Eliminando la entidad");
+				} finally {
+					getFrontService().setLoading(false);
+				}
+				
+				showListPanel();
+				
+				return null;
+			}
+		};
+		
+		swingWorker.execute();
+	}
+	
 	protected EntityListPanel<T> getListPanel() {
 		return listPanel;
 	}
@@ -93,4 +146,6 @@ abstract public class EntityService<T> implements Service {
 
 	public abstract void showIndexPanel();
 	protected abstract List<T> getListPanelData() throws DaoException;
+	protected abstract void persistEntity() throws DaoException, ValidationException;
+	protected abstract void deleteEntity(T entity) throws DaoException;
 }
