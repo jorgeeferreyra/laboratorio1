@@ -7,34 +7,40 @@ import javax.swing.JPanel;
 import entrega.entities.User;
 import entrega.services.AuthService;
 import entrega.services.DoctorService;
+import entrega.services.LoggedService;
+import entrega.services.PatientService;
 import entrega.services.Service;
 
 /*
- * Antes de comenzar asegurese de crear las tablas necesarias
- * en el paquete entrega.models se encuentran todos los modelos
- * en cada modelo se encuentra la sentencia para crear su tabla
+ * Antes de comenzar asegúrese de crear las tablas necesarias
+ * en el paquete entrega.models se encuentran todos las entidades
+ * en cada entidad se encuentra la sentencia para crear su tabla
  */
 
-public class FrontService implements Service {
+public class FrontService {
 	private JFrame frame;
 	private boolean loading;
 	
 	private AuthService authService;
+	private LoggedService loggedService;
 	private DoctorService doctorService;
+	private PatientService patientService;
 	
 	private User user;
 
 	public static void main(String[] args) {
 		FrontService frontService = new FrontService();
 
-		frontService.showIndexPanel();
+		frontService.bootstrap();
 	}
 	
 	public FrontService() {
 		this.setLoading(true);
 		
 		this.authService = new AuthService(this);
+		this.loggedService = new LoggedService(this);
 		this.doctorService = new DoctorService(this);
+		this.patientService = new PatientService(this);
 		
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -43,23 +49,30 @@ public class FrontService implements Service {
 		this.setLoading(false);
 	}
 
-	@Override
-	public void showIndexPanel() {
+	public void bootstrap() {
 		this.loadRememberedUser();
 		
 		if (this.getUser() instanceof User) {
-			this.focusDoctorsService();
+			this.focusLoggedService();
 		} else {
-			this.focusAuthService();
+			this.focusAuthService();;
 		}
 	}
 	
 	public void focusAuthService() {
-		this.authService.showIndexPanel();
+		this.focusService(this.authService);
+	}
+	
+	public void focusLoggedService() {
+		this.focusService(this.loggedService);
 	}
 	
 	public void focusDoctorsService() {
-		this.doctorService.showIndexPanel();
+		this.focusService(this.doctorService);
+	}
+	
+	public void focusPatientsService() {
+		this.focusService(this.patientService);
 	}
 
 	public void showPanel(JPanel panel) {
@@ -126,5 +139,9 @@ public class FrontService implements Service {
 	
 	private void loadRememberedUser() {
 		// TODO: traer el usuario logueado/recordado desde algun medio: archivo o base de datos
+	}
+	
+	private void focusService(Service service) {
+		service.showIndexPanel();
 	}
 }

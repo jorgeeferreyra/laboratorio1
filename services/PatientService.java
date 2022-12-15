@@ -12,7 +12,7 @@ import entrega.validation.PatientValidation;
 import entrega.views.patients.PatientFormPanel;
 import entrega.views.patients.PatientListPanel;
 
-public class PatientService extends EntityService<Patient> implements Service {	
+public class PatientService extends EntityService<Patient> {	
 	public PatientService(FrontService frontService) {
 		super(frontService);
 		

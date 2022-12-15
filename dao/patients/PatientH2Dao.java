@@ -108,7 +108,7 @@ public class PatientH2Dao extends H2Dao implements PatientDao {
 
 	
 	public String getTable() {
-		return "doctors";
+		return "patients";
 	}
 	
 	public List<String> getValues(Entity model) {

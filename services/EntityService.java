@@ -10,13 +10,12 @@ import entrega.exceptions.ValidationException;
 import entrega.views.EntityFormPanel;
 import entrega.views.EntityListPanel;
 
-abstract public class EntityService<T> implements Service {
-	private FrontService frontService;
+abstract public class EntityService<T> extends Service {
 	private EntityListPanel<T> listPanel;
 	private EntityFormPanel<T> formPanel;
 
 	public EntityService(FrontService frontService) {
-		this.frontService = frontService;
+		super(frontService);
 	}
 	
 	public void showListPanel() {
@@ -24,15 +23,15 @@ abstract public class EntityService<T> implements Service {
 			@Override
 			protected Void doInBackground() throws Exception {
 				try {
-					frontService.setLoading(true);
+					getFrontService().setLoading(true);
 					
 					listPanel.setContent(getListPanelData());
 					
-					frontService.showPanel(listPanel);
+					getFrontService().showPanel(listPanel);
 				} catch (DaoException e) {
-					frontService.handleExceptions(e, "Error cargando el listado");
+					getFrontService().handleExceptions(e, "Error cargando el listado");
 				} finally {
-					frontService.setLoading(false);
+					getFrontService().setLoading(false);
 				}
 				
 				return null;
@@ -48,7 +47,7 @@ abstract public class EntityService<T> implements Service {
 			protected Void doInBackground() throws Exception {
 				formPanel.setEntity(null);
 				
-				frontService.showPanel(formPanel);
+				getFrontService().showPanel(formPanel);
 				
 				return null;
 			}
@@ -63,7 +62,7 @@ abstract public class EntityService<T> implements Service {
 			protected Void doInBackground() throws Exception {
 				formPanel.setEntity(entity);
 				
-				frontService.showPanel(formPanel);
+				getFrontService().showPanel(formPanel);
 				
 				return null;
 			}
@@ -138,10 +137,6 @@ abstract public class EntityService<T> implements Service {
 
 	protected void setFormPanel(EntityFormPanel<T> formPanel) {
 		this.formPanel = formPanel;
-	}
-
-	protected FrontService getFrontService() {
-		return frontService;
 	}
 
 	public abstract void showIndexPanel();

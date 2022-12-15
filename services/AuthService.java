@@ -13,14 +13,12 @@ import entrega.validation.RegisterValidation;
 import entrega.views.auth.LoginFormPanel;
 import entrega.views.auth.RegisterFormPanel;
 
-public class AuthService implements Service {
-	private FrontService frontService;
-	
+public class AuthService extends Service {
 	private RegisterFormPanel registerFormPanel;
 	private LoginFormPanel loginFormPanel;
 	
 	public AuthService(FrontService frontService) {
-		this.frontService = frontService;
+		super(frontService);
 		this.build();
 	}
 	
@@ -34,15 +32,15 @@ public class AuthService implements Service {
 	}
 	
 	public void showLoginFormPanel() {
-		this.frontService.showPanel(this.loginFormPanel);
+		this.getFrontService().showPanel(this.loginFormPanel);
 	}
 	
 	public void showRegisterFormPanel() {
-		this.frontService.showPanel(this.registerFormPanel);
+		this.getFrontService().showPanel(this.registerFormPanel);
 	}
 	
 	public void login() {
-		if (this.frontService.isLoading()) {
+		if (this.getFrontService().isLoading()) {
 			return;
 		}
 		
@@ -57,11 +55,11 @@ public class AuthService implements Service {
 				try {
 					validation.validate();
 				} catch (ValidationException e) {
-					frontService.showWarning(e.getMessage());
+					getFrontService().showWarning(e.getMessage());
 					return null;
 				}
 				
-				frontService.setLoading(true);
+				getFrontService().setLoading(true);
 				
 				UserDao userDao = H2DaoFactory.getUserDao();
 				
@@ -69,16 +67,16 @@ public class AuthService implements Service {
 					User user = userDao.getByIdNumberAndPassword(idNumber, password);
 					
 					if (user instanceof User) {
-						frontService.setUser(user);
-						frontService.focusDoctorsService();
+						getFrontService().setUser(user);
+						getFrontService().focusLoggedService();
 					} else {
-						frontService.showWarning("El documento o contraseña no coinciden");
+						getFrontService().showWarning("El documento o contraseña no coinciden");
 					}
 					
 				} catch (DaoException e) {
-					frontService.handleExceptions(e, "Error al iniciar sesión");
+					getFrontService().handleExceptions(e, "Error al iniciar sesión");
 				} finally {
-					frontService.setLoading(false);
+					getFrontService().setLoading(false);
 				}
 				return null;
 			}
@@ -88,7 +86,7 @@ public class AuthService implements Service {
 	}
 	
 	public void register() {
-		if (this.frontService.isLoading()) {
+		if (this.getFrontService().isLoading()) {
 			return;
 		}
 		
@@ -106,11 +104,11 @@ public class AuthService implements Service {
 				try {
 					validation.validate();
 				} catch (ValidationException e) {
-					frontService.showWarning(e.getMessage());
+					getFrontService().showWarning(e.getMessage());
 					return null;
 				}
 				
-				frontService.setLoading(true);
+				getFrontService().setLoading(true);
 				
 				try {
 					UserDao userDao = H2DaoFactory.getUserDao();
@@ -118,25 +116,25 @@ public class AuthService implements Service {
 					User user = userDao.getByIdNumber(idNumber);
 					
 					if (user instanceof User) {
-						frontService.showWarning("El documento ingresado ya se encuentra registrado");
+						getFrontService().showWarning("El documento ingresado ya se encuentra registrado");
 					}
 					
 					user = userDao.getByEmail(email);
 					
 					if (user instanceof User) {
-						frontService.showWarning("El email ingresado ya se encuentra registrado");
+						getFrontService().showWarning("El email ingresado ya se encuentra registrado");
 					}
 					
 					user = new User(firstName, lastName, idNumber, email, password);
 					
 					userDao.save(user);
 										
-					frontService.setUser(user);
-					frontService.focusDoctorsService();
+					getFrontService().setUser(user);
+					getFrontService().focusLoggedService();
 				} catch (DaoException e) {
-					frontService.handleExceptions(e, "Error al registrar");
+					getFrontService().handleExceptions(e, "Error al registrar");
 				} finally {
-					frontService.setLoading(false);
+					getFrontService().setLoading(false);
 				}
 				return null;
 			}

@@ -1,6 +1,8 @@
 package entrega.views;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -43,6 +45,13 @@ public abstract class EntityListPanel<T> extends BorderPanelWithTitle {
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		
 		this.buildSidebar(panel);
+		
+		panel.add(this.createButton("Volver", new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				getService().getFrontService().focusLoggedService();
+			}
+		}));
 
 		this.add(panel, BorderLayout.WEST);
 	}
