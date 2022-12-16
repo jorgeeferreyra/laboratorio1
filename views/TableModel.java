@@ -7,15 +7,12 @@ import javax.swing.table.AbstractTableModel;
 
 @SuppressWarnings("serial")
 public abstract class TableModel<T> extends AbstractTableModel {
-	protected String[] titles = {};
+	private String[] titles;
 	private List<T> content;
 	
-	public TableModel() {
+	public TableModel(String[] titles) {
+		this.titles = titles;
 		this.content = new ArrayList<T>();
-	}
-	
-	public TableModel(List<T> content) {
-		this.content = content;
 	}
 	
 	public int getRowCount() {

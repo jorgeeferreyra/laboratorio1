@@ -58,8 +58,8 @@ public abstract class EntityListPanel<T> extends BorderPanelWithTitle {
 	
 	private void addTable() {
 		this.table = new JTable(this.model);
-		this.scrollPane = new JScrollPane(this.table);
 		this.table.setRowSelectionAllowed(false);
+		this.scrollPane = new JScrollPane(this.table);
 		this.add(this.scrollPane, BorderLayout.CENTER);
 	}
 	

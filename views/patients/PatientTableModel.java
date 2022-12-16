@@ -10,8 +10,10 @@ public class PatientTableModel extends TableModel<Patient> {
 	private static final int LASTNAME_COLUMN = 2;
 	private static final int PHONE_COLUMN = 3;
 	private static final int EMAIL_COLUMN = 4;
-	
-	protected String[] titles = {"ID", "Nombre", "Apellido", "Teléfono", "Email"};
+		
+	public PatientTableModel() {
+		super(new String[] {"ID", "Nombre", "Apellido", "Teléfono", "Email"});
+	}
 	
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Patient patient = this.getContent().get(rowIndex);
