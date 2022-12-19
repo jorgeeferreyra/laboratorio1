@@ -14,6 +14,7 @@ abstract public class EntityService<T> extends Service {
 	private EntityListPanel<T> listPanel;
 	private EntityFormPanel<T> formPanel;
 
+	// No puse el list y el form en el constructor porque ambos necesitan el this, y no está accesible antes del super()
 	public EntityService(FrontService frontService) {
 		super(frontService);
 	}
@@ -42,18 +43,8 @@ abstract public class EntityService<T> extends Service {
 	}
 	
 	public void showFormPanel() {
-		SwingWorker<Void, String> swingWorker = new SwingWorker<Void, String>() {
-			@Override
-			protected Void doInBackground() throws Exception {
-				formPanel.setEntity(null);
-				
-				getFrontService().showPanel(formPanel);
-				
-				return null;
-			}
-		};
-		
-		swingWorker.execute();
+		this.formPanel.setEntity(null);
+		getFrontService().showPanel(this.formPanel);
 	}
 	
 	public void showFormPanel(T entity) {
@@ -83,6 +74,7 @@ abstract public class EntityService<T> extends Service {
 			protected Void doInBackground() throws Exception {			
 				try {
 					persistEntity();
+					showListPanel();
 				} catch (DaoException|ValidationException e) {
 					getFrontService().handleExceptions(e, "Error guardando la entidad");
 				} finally {
@@ -113,9 +105,7 @@ abstract public class EntityService<T> extends Service {
 				} finally {
 					getFrontService().setLoading(false);
 				}
-				
-				showListPanel();
-				
+								
 				return null;
 			}
 		};

@@ -4,6 +4,7 @@ package entrega.entities;
  	CREATE TABLE PATIENTS(
  		ID INT PRIMARY KEY,
  		USER_ID INT,
+ 		HEALTH_ASSURANCE_ID INT,
  		FIRSTNAME VARCHAR(255),
  		LASTNAME VARCHAR(255),
  		PHONE VARCHAR(255),
@@ -13,6 +14,7 @@ package entrega.entities;
 
 public class Patient extends Entity {
 	private int userId;
+	private int healthAssuranceId;
 	private String firstName;
 	private String lastName;
 	private String phone;
@@ -22,27 +24,30 @@ public class Patient extends Entity {
 		this.setIsNew(true);
 		
 		this.userId = 0;
+		this.healthAssuranceId = 0;
 		this.firstName = "";
 		this.lastName = "";
 		this.phone = "";
 		this.email = "";
 	}
 	
-	public Patient(int userId, String firstName, String lastName, String phone, String email) {
+	public Patient(int userId, int healthAssuranceId, String firstName, String lastName, String phone, String email) {
 		this.setIsNew(true);
 		
 		this.userId = userId;
+		this.healthAssuranceId = healthAssuranceId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.phone = phone;
 		this.email = email;
 	}
 	
-	public Patient(int id, int userId, String firstName, String lastName, String phone, String email) {
+	public Patient(int id, int userId, int healthAssuranceId, String firstName, String lastName, String phone, String email) {
 		this.setIsNew(false);
 		this.setId(id);
 
 		this.userId = userId;
+		this.healthAssuranceId = healthAssuranceId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
@@ -51,6 +56,10 @@ public class Patient extends Entity {
 
 	public Integer getUserId() {
 		return Integer.valueOf(this.userId);
+	}
+
+	public Integer getHealthAssuranceId() {
+		return Integer.valueOf(this.healthAssuranceId);
 	}
 		
 	public String getFirstName() {
@@ -63,6 +72,10 @@ public class Patient extends Entity {
 	
 	public String getLastName() {
 		return this.lastName;
+	}
+
+	public void setHealthAssuranceId(int healthAssuranceId) {
+		this.healthAssuranceId = healthAssuranceId;
 	}
 	
 	public void setLastName(String lastName) {

@@ -22,6 +22,15 @@ public class LoggedPanel extends BorderPanelWithTitle {
 		JPanel panel = new JPanel();
 		
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+		
+		panel.add(this.createButton("Administrar obras sociales", new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				LoggedService service = (LoggedService) getService();
+				service.getFrontService().focusHealthAssuranceService();;
+			}
+		}));
 		
 		panel.add(this.createButton("Administrar médicos", new ActionListener() {
 			@Override

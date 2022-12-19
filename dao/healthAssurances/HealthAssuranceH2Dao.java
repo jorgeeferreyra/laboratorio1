@@ -1,4 +1,4 @@
-package entrega.dao.patients;
+package entrega.dao.healthAssurances;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,32 +8,28 @@ import java.util.List;
 
 import entrega.dao.H2Dao;
 import entrega.database.H2Database;
+import entrega.entities.HealthAssurance;
 import entrega.entities.Entity;
-import entrega.entities.Patient;
 import entrega.exceptions.DatabaseException;
 import entrega.exceptions.DaoException;
 
-public class PatientH2Dao extends H2Dao implements PatientDao {
-	public PatientH2Dao(H2Database database) {
+public class HealthAssuranceH2Dao extends H2Dao implements HealthAssuranceDao {
+	public HealthAssuranceH2Dao(H2Database database) {
 		super(database);
 	}
 
 	@Override
-	public List<Patient> getAll(int userId) throws DaoException {
-		List<Patient> result = new ArrayList<Patient>();
+	public List<HealthAssurance> getAll(int userId) throws DaoException {
+		List<HealthAssurance> result = new ArrayList<HealthAssurance>();
 		
 		try {
 			ResultSet resultSet = this.query("SELECT * FROM " + this.getTable() + " WHERE USER_ID=" + String.valueOf(userId));
 			
 			while(resultSet.next()) {
-				result.add(new Patient(
+				result.add(new HealthAssurance(
 					resultSet.getInt("id"),
 					resultSet.getInt("user_id"),
-					resultSet.getInt("health_assurance_id"),
-					resultSet.getString("firstName"),
-					resultSet.getString("lastName"),
-					resultSet.getString("phone"),
-					resultSet.getString("email")
+					resultSet.getString("name")
 				));
 			}
 		} catch (SQLException | DatabaseException e) {
@@ -52,44 +48,40 @@ public class PatientH2Dao extends H2Dao implements PatientDao {
 	}
 
 	@Override
-	public Patient getById(int id) throws DaoException {
+	public HealthAssurance getById(int id) throws DaoException {
 		return this.getOneFromQuery("SELECT * FROM " + this.getTable() + " WHERE ID=" + String.valueOf(id));
 	}
 
 	@Override
-	public boolean save(Patient patient) throws DaoException {
+	public boolean save(HealthAssurance healthAssurance) throws DaoException {
 		try {
-			return super.save(patient);
+			return super.save(healthAssurance);
 		} catch (DatabaseException e) {
 			throw new DaoException(e.getMessage());
 		}
 	}
 
 	@Override
-	public boolean delete(Patient patient) throws DaoException {
+	public boolean delete(HealthAssurance healthAssurance) throws DaoException {
 		try {
-			return super.delete(patient);
+			return super.delete(healthAssurance);
 		} catch (DatabaseException e) {
 			throw new DaoException(e.getMessage());
 		}
 	}
 	
 
-	private Patient getOneFromQuery(String query) throws DaoException {
-		Patient patient = null;
+	private HealthAssurance getOneFromQuery(String query) throws DaoException {
+		HealthAssurance healthAssurance = null;
 		
 		try {
 			ResultSet resultSet = this.query(query);
 			
-			patient = resultSet.next()
-				? new Patient(
+			healthAssurance = resultSet.next()
+				? new HealthAssurance(
 						resultSet.getInt("id"),
 						resultSet.getInt("user_id"),
-						resultSet.getInt("health_assurance_id"),
-						resultSet.getString("firstName"),
-						resultSet.getString("lastName"),
-						resultSet.getString("phone"),
-						resultSet.getString("email")
+						resultSet.getString("name")
 					)
 				: null;
 		} catch (SQLException | DatabaseException e) {
@@ -104,31 +96,26 @@ public class PatientH2Dao extends H2Dao implements PatientDao {
 			}
 		}
 		
-		return patient;
+		return healthAssurance;
 	}
 	
 
 	
 	public String getTable() {
-		return "patients";
+		return "health_assurances";
 	}
 	
 	public List<String> getValues(Entity model) {
-		Patient patient = (Patient) model;
+		HealthAssurance healthAssurance = (HealthAssurance) model;
 		
 		return Arrays.asList(new String[] {
-			patient.getId().toString(),
-			patient.getUserId().toString(),
-			patient.getHealthAssuranceId().toString(),
-			this.betweenSingleQuotes(patient.getFirstName()), 
-			this.betweenSingleQuotes(patient.getLastName()), 
-			this.betweenSingleQuotes(patient.getPhone()), 
-			this.betweenSingleQuotes(patient.getEmail())
+			healthAssurance.getId().toString(),
+			healthAssurance.getUserId().toString(),
+			this.betweenSingleQuotes(healthAssurance.getName())
 		});
 	}
 
 	public List<String> getFields() {
-		return Arrays.asList(new String[] {"id", "user_id", "health_assurance_id", "firstName", "lastName", "phone", "email"});
+		return Arrays.asList(new String[] {"id", "user_id", "name"});
 	}
-
 }

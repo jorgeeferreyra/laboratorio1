@@ -127,5 +127,4 @@ public class DoctorH2Dao extends H2Dao implements DoctorDao {
 	public List<String> getFields() {
 		return Arrays.asList(new String[] {"id", "user_id", "firstName", "lastName", "phone", "email"});
 	}
-
 }

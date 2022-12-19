@@ -40,10 +40,10 @@ public class PatientListPanel extends EntityListPanel<Patient> {
 		panel.add(this.createButton("Quitar", new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int doctorIndex = getTable().getSelectedRow();
+				int patientIndex = getTable().getSelectedRow();
 				
-				if (doctorIndex > -1) {
-					Patient patient = getModel().getContent().get(doctorIndex);
+				if (patientIndex > -1) {
+					Patient patient = getModel().getContent().get(patientIndex);
 					PatientService service = (PatientService) getService();
 					service.removeEntity(patient);
 				}

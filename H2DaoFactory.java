@@ -2,6 +2,8 @@ package entrega;
 
 import entrega.dao.doctors.DoctorDao;
 import entrega.dao.doctors.DoctorH2Dao;
+import entrega.dao.healthAssurances.HealthAssuranceDao;
+import entrega.dao.healthAssurances.HealthAssuranceH2Dao;
 import entrega.dao.patients.PatientDao;
 import entrega.dao.patients.PatientH2Dao;
 import entrega.dao.users.UserDao;
@@ -44,6 +46,14 @@ public class H2DaoFactory {
 	public static PatientDao getPatientDao() throws DaoException {
 		try {
 			return new PatientH2Dao((H2Database) H2DaoFactory.getDatabase());
+		} catch (DatabaseException e) {
+			throw new DaoException(e.getMessage());
+		}
+	}
+	
+	public static HealthAssuranceDao getHealthAssuranceDao() throws DaoException {
+		try {
+			return new HealthAssuranceH2Dao((H2Database) H2DaoFactory.getDatabase());
 		} catch (DatabaseException e) {
 			throw new DaoException(e.getMessage());
 		}

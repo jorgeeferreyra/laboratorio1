@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import entrega.entities.User;
 import entrega.services.AuthService;
 import entrega.services.DoctorService;
+import entrega.services.HealthAssuranceService;
 import entrega.services.LoggedService;
 import entrega.services.PatientService;
 import entrega.services.Service;
@@ -25,6 +26,7 @@ public class FrontService {
 	private LoggedService loggedService;
 	private DoctorService doctorService;
 	private PatientService patientService;
+	private HealthAssuranceService healthAssuranceService;
 	
 	private User user;
 
@@ -41,6 +43,7 @@ public class FrontService {
 		this.loggedService = new LoggedService(this);
 		this.doctorService = new DoctorService(this);
 		this.patientService = new PatientService(this);
+		this.healthAssuranceService = new HealthAssuranceService(this);
 		
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -73,6 +76,10 @@ public class FrontService {
 	
 	public void focusPatientsService() {
 		this.focusService(this.patientService);
+	}
+
+	public void focusHealthAssuranceService() {
+		this.focusService(this.healthAssuranceService);
 	}
 
 	public void showPanel(JPanel panel) {

@@ -34,12 +34,14 @@ public class PatientService extends EntityService<Patient> {
 	protected void persistEntity() throws DaoException, ValidationException {
 		PatientFormPanel formPanel = (PatientFormPanel) getFormPanel();
 		
+		String healthAssuranceId = formPanel.getHealthAssuranceId();
 		String firstName = formPanel.getFirstName();
 		String lastName = formPanel.getLastName();
 		String phone = formPanel.getPhone();
 		String email = formPanel.getEmail();
 		
 		PatientValidation validation = new PatientValidation(
+			healthAssuranceId,
 			firstName,
 			lastName,
 			phone,
@@ -50,9 +52,12 @@ public class PatientService extends EntityService<Patient> {
 						
 		Patient patient = formPanel.getEntity();
 		
+		int healthAssuranceIdAsInt = Integer.valueOf(healthAssuranceId);
+		
 		if (patient == null) {
-			patient = new Patient(getFrontService().getUser().getId(), firstName, lastName, phone, email);
+			patient = new Patient(getFrontService().getUser().getId(), healthAssuranceIdAsInt, firstName, lastName, phone, email);
 		} else {
+			patient.setHealthAssuranceId(healthAssuranceIdAsInt);
 			patient.setFirstName(firstName);
 			patient.setLastName(lastName);
 			patient.setPhone(phone);
