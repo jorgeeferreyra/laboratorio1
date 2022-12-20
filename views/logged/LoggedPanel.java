@@ -28,7 +28,7 @@ public class LoggedPanel extends BorderPanelWithTitle {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				LoggedService service = (LoggedService) getService();
-				service.getFrontService().focusHealthAssuranceService();;
+				service.getFrontService().focusHealthAssurancesService();;
 			}
 		}));
 		
@@ -45,6 +45,14 @@ public class LoggedPanel extends BorderPanelWithTitle {
 			public void actionPerformed(ActionEvent e) {
 				LoggedService service = (LoggedService) getService();
 				service.getFrontService().focusPatientsService();;
+			}
+		}));
+		
+		panel.add(this.createButton("Administrar turnos", new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				LoggedService service = (LoggedService) getService();
+				service.getFrontService().focusAppointmentsService();;
 			}
 		}));
 				

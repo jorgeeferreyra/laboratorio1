@@ -100,6 +100,7 @@ abstract public class EntityService<T> extends Service {
 			protected Void doInBackground() throws Exception {
 				try {
 					deleteEntity(entity);
+					listPanel.setContent(getListPanelData());
 				} catch (DaoException e) {
 					getFrontService().handleExceptions(e, "Eliminando la entidad");
 				} finally {

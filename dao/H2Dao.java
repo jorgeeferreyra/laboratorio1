@@ -113,13 +113,13 @@ abstract public class H2Dao extends Dao {
 		int result;
 		
 		try {
-			ResultSet resultSet = this.query("SELECT COUNT(id) AS count FROM " + this.getTable());
+			ResultSet resultSet = this.query("SELECT id AS count FROM " + this.getTable() + " ORDER BY id DESC LIMIT 1");
 			
 			if (!resultSet.next()) {
-				throw new DatabaseException("No se obtuvieron resultados para un recuento. No se pudo calcular identificador autoincremental.");
+				result = 0;
+			} else {
+				result = resultSet.getInt("id");
 			}
-			
-			result = resultSet.getInt("count");
 		} catch (SQLException e) {
 			throw new DatabaseException(e.getMessage());
 		} finally {
