@@ -12,7 +12,7 @@ import entrega.views.EntityListPanel;
 @SuppressWarnings("serial")
 public class AppointmentListPanel extends EntityListPanel<Appointment> {
 	public AppointmentListPanel(AppointmentService service) {
-		super("Turnos", service, new AppointmentTableModel());
+		super("Turnos", service, new AppointmentTableModel(service));
 	}
 	
 	protected void buildSidebar(JPanel panel) {

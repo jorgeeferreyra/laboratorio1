@@ -4,6 +4,7 @@ import java.util.List;
 
 import entrega.FrontService;
 import entrega.H2DaoFactory;
+import entrega.dao.appointments.AppointmentDao;
 import entrega.dao.doctors.DoctorDao;
 import entrega.entities.Doctor;
 import entrega.exceptions.DaoException;
@@ -69,10 +70,15 @@ public class DoctorService extends EntityService<Doctor> {
 			return;
 		}
 		
+		AppointmentDao appointmentDao = H2DaoFactory.getAppointmentDao();
+		
+		if (appointmentDao.getByDoctorId(doctor.getId()).size() > 0) {
+			this.getFrontService().showWarning("El doctor seleccionado no puede ser eliminado por tener turnos asociados");
+			return;
+		}
+		
 		DoctorDao doctorDao = H2DaoFactory.getDoctorDao();
-		
-		// TODO: chequear que el doctor no tenga turnos asociados
-		
+				
 		doctorDao.delete(doctor);
 	}
 }

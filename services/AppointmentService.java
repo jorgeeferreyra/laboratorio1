@@ -5,7 +5,11 @@ import java.util.List;
 import entrega.FrontService;
 import entrega.H2DaoFactory;
 import entrega.dao.appointments.AppointmentDao;
+import entrega.dao.doctors.DoctorDao;
+import entrega.dao.patients.PatientDao;
 import entrega.entities.Appointment;
+import entrega.entities.Doctor;
+import entrega.entities.Patient;
 import entrega.exceptions.DaoException;
 import entrega.exceptions.ValidationException;
 import entrega.validation.AppointmentValidation;
@@ -23,6 +27,38 @@ public class AppointmentService extends EntityService<Appointment> {
 	@Override
 	public void showIndexPanel() {
 		this.showListPanel();
+	}
+	
+	public String getDoctorFullName(Appointment appointment) {
+		try {
+			DoctorDao doctortDao = H2DaoFactory.getDoctorDao();
+			
+			Doctor doctor = doctortDao.getById(appointment.getDoctorId());
+			
+			if (doctor == null) {
+				return "Médico no encontrado";
+			}
+			
+			return doctor.getFirstName() + " " + doctor.getLastName();
+		} catch (DaoException e) {
+			return "Médico no encontrado";
+		}
+	}
+	
+	public String getPatientFullName(Appointment appointment) {
+		try {
+			PatientDao patientDao = H2DaoFactory.getPatientDao();
+			
+			Patient patient = patientDao.getById(appointment.getPatientId());
+			
+			if (patient == null) {
+				return "Paciente no encontrado";
+			}
+			
+			return patient.getFirstName() + " " + patient.getLastName();
+		} catch (DaoException e) {
+			return "Paciente no encontrado";
+		}
 	}
 		
 	protected List<Appointment> getListPanelData() throws DaoException {

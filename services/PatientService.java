@@ -4,7 +4,10 @@ import java.util.List;
 
 import entrega.FrontService;
 import entrega.H2DaoFactory;
+import entrega.dao.appointments.AppointmentDao;
+import entrega.dao.healthAssurances.HealthAssuranceDao;
 import entrega.dao.patients.PatientDao;
+import entrega.entities.HealthAssurance;
 import entrega.entities.Patient;
 import entrega.exceptions.DaoException;
 import entrega.exceptions.ValidationException;
@@ -23,6 +26,22 @@ public class PatientService extends EntityService<Patient> {
 	@Override
 	public void showIndexPanel() {
 		this.showListPanel();
+	}
+	
+	public String getHealthAssuranceName(Patient patient) {
+		try {
+			HealthAssuranceDao healthAssuranceDao = H2DaoFactory.getHealthAssuranceDao();
+			
+			HealthAssurance healthAssurance = healthAssuranceDao.getById(patient.getHealthAssuranceId());
+			
+			if (healthAssurance == null) {
+				return "Obra Social no encontrado";
+			}
+			
+			return healthAssurance.getName();
+		} catch (DaoException e) {
+			return "Obra Social no encontrado";
+		}
 	}
 		
 	protected List<Patient> getListPanelData() throws DaoException {
@@ -74,9 +93,14 @@ public class PatientService extends EntityService<Patient> {
 			return;
 		}
 		
-		PatientDao patientDao = H2DaoFactory.getPatientDao();
+		AppointmentDao appointmentDao = H2DaoFactory.getAppointmentDao();
 		
-		// TODO: chequear que el paciente no tenga turnos asociados
+		if (appointmentDao.getByPatientId(patient.getId()).size() > 0) {
+			this.getFrontService().showWarning("El paciente seleccionado no puede ser eliminado por tener turnos asociados");
+			return;
+		}
+		
+		PatientDao patientDao = H2DaoFactory.getPatientDao();
 		
 		patientDao.delete(patient);
 	}

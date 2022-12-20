@@ -5,6 +5,7 @@ import java.util.List;
 import entrega.FrontService;
 import entrega.H2DaoFactory;
 import entrega.dao.healthAssurances.HealthAssuranceDao;
+import entrega.dao.patients.PatientDao;
 import entrega.entities.HealthAssurance;
 import entrega.exceptions.DaoException;
 import entrega.exceptions.ValidationException;
@@ -60,9 +61,14 @@ public class HealthAssuranceService extends EntityService<HealthAssurance> {
 			return;
 		}
 		
-		HealthAssuranceDao healthAssuranceDao = H2DaoFactory.getHealthAssuranceDao();
+		PatientDao patientDao = H2DaoFactory.getPatientDao();
 		
-		// TODO: chequear que el seguro no tenga pacientes asociados
+		if (patientDao.getByHealthAssuranceId(healthAssurance.getId()).size() > 0) {
+			this.getFrontService().showWarning("La obra social seleccionada no puede ser eliminada por tener pacientes asociados");
+			return;
+		}
+		
+		HealthAssuranceDao healthAssuranceDao = H2DaoFactory.getHealthAssuranceDao();
 		
 		healthAssuranceDao.delete(healthAssurance);
 	}

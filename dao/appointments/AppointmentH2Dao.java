@@ -127,4 +127,68 @@ public class AppointmentH2Dao extends H2Dao implements AppointmentDao {
 	public List<String> getFields() {
 		return Arrays.asList(new String[] {"id", "user_id", "doctor_id", "patient_id", "starts_at", "duration"});
 	}
+
+	@Override
+	public List<Appointment> getByDoctorId(int doctorId) throws DaoException {
+		List<Appointment> result = new ArrayList<Appointment>();
+		
+		try {
+			ResultSet resultSet = this.query("SELECT * FROM " + this.getTable() + " WHERE DOCTOR_ID=" + String.valueOf(doctorId));
+			
+			while(resultSet.next()) {
+				result.add(new Appointment(
+					resultSet.getInt("id"),
+					resultSet.getInt("user_id"),
+					resultSet.getInt("doctor_id"),
+					resultSet.getInt("patient_id"),
+					resultSet.getString("starts_at"),
+					resultSet.getInt("duration")
+				));
+			}
+		} catch (SQLException | DatabaseException e) {
+			throw new DaoException(e.getMessage());
+		} finally {
+			if (this.databaseIsConnected()) {
+				try {
+					this.databaseDisconnect();
+				} catch (DatabaseException e) {
+					throw new DaoException(e.getMessage());
+				}
+			}
+		}
+		
+		return result;
+	}
+
+	@Override
+	public List<Appointment> getByPatientId(int patientId) throws DaoException {
+		List<Appointment> result = new ArrayList<Appointment>();
+		
+		try {
+			ResultSet resultSet = this.query("SELECT * FROM " + this.getTable() + " WHERE PATIENT_ID=" + String.valueOf(patientId));
+			
+			while(resultSet.next()) {
+				result.add(new Appointment(
+					resultSet.getInt("id"),
+					resultSet.getInt("user_id"),
+					resultSet.getInt("doctor_id"),
+					resultSet.getInt("patient_id"),
+					resultSet.getString("starts_at"),
+					resultSet.getInt("duration")
+				));
+			}
+		} catch (SQLException | DatabaseException e) {
+			throw new DaoException(e.getMessage());
+		} finally {
+			if (this.databaseIsConnected()) {
+				try {
+					this.databaseDisconnect();
+				} catch (DatabaseException e) {
+					throw new DaoException(e.getMessage());
+				}
+			}
+		}
+		
+		return result;
+	}
 }

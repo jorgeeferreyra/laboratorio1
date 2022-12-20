@@ -131,4 +131,37 @@ public class PatientH2Dao extends H2Dao implements PatientDao {
 		return Arrays.asList(new String[] {"id", "user_id", "health_assurance_id", "firstName", "lastName", "phone", "email"});
 	}
 
+	@Override
+	public List<Patient> getByHealthAssuranceId(int healthAssuranceId) throws DaoException {
+		List<Patient> result = new ArrayList<Patient>();
+		
+		try {
+			ResultSet resultSet = this.query("SELECT * FROM " + this.getTable() + " WHERE HEALTH_ASSURANCE_ID=" + String.valueOf(healthAssuranceId));
+			
+			while(resultSet.next()) {
+				result.add(new Patient(
+					resultSet.getInt("id"),
+					resultSet.getInt("user_id"),
+					resultSet.getInt("health_assurance_id"),
+					resultSet.getString("firstName"),
+					resultSet.getString("lastName"),
+					resultSet.getString("phone"),
+					resultSet.getString("email")
+				));
+			}
+		} catch (SQLException | DatabaseException e) {
+			throw new DaoException(e.getMessage());
+		} finally {
+			if (this.databaseIsConnected()) {
+				try {
+					this.databaseDisconnect();
+				} catch (DatabaseException e) {
+					throw new DaoException(e.getMessage());
+				}
+			}
+		}
+		
+		return result;
+	}
+
 }

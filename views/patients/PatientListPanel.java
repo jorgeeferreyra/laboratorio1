@@ -12,7 +12,7 @@ import entrega.views.EntityListPanel;
 @SuppressWarnings("serial")
 public class PatientListPanel extends EntityListPanel<Patient> {
 	public PatientListPanel(PatientService patientService) {
-		super("Pacientes", patientService, new PatientTableModel());
+		super("Pacientes", patientService, new PatientTableModel(patientService));
 	}
 	
 	protected void buildSidebar(JPanel panel) {
