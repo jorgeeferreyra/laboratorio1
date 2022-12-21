@@ -8,16 +8,16 @@ import javax.swing.JPanel;
 import entrega.services.AuthService;
 import entrega.validation.RegisterValidation;
 import entrega.views.FormPanel;
-import entrega.views.InputPanel;
-import entrega.views.PasswordInputPanel;
+import entrega.views.TextFieldPanel;
+import entrega.views.PasswordFieldPanel;
 
 @SuppressWarnings("serial")
 public class RegisterFormPanel extends FormPanel {
-	private InputPanel firstNameInput;
-	private InputPanel lastNameInput;
-	private InputPanel idNumberInput;
-	private InputPanel emailInput;
-	private PasswordInputPanel passwordInput;
+	private TextFieldPanel firstNameInput;
+	private TextFieldPanel lastNameInput;
+	private TextFieldPanel idNumberInput;
+	private TextFieldPanel emailInput;
+	private PasswordFieldPanel passwordInput;
 	
 	public RegisterFormPanel(AuthService service) {
 		super("Registrarse", service);
@@ -44,11 +44,11 @@ public class RegisterFormPanel extends FormPanel {
 	}
 	
 	protected void buildCenter(JPanel panel) {
-		this.firstNameInput = new InputPanel(RegisterValidation.FIRST_NAME_LABEL);
-		this.lastNameInput = new InputPanel(RegisterValidation.LAST_NAME_LABEL);
-		this.idNumberInput = new InputPanel(RegisterValidation.ID_NUMBER_LABEL);
-		this.emailInput = new InputPanel(RegisterValidation.EMAIL_LABEL);
-		this.passwordInput = new PasswordInputPanel(RegisterValidation.PASSWORD_LABEL);
+		this.firstNameInput = new TextFieldPanel(RegisterValidation.FIRST_NAME_LABEL);
+		this.lastNameInput = new TextFieldPanel(RegisterValidation.LAST_NAME_LABEL);
+		this.idNumberInput = new TextFieldPanel(RegisterValidation.ID_NUMBER_LABEL);
+		this.emailInput = new TextFieldPanel(RegisterValidation.EMAIL_LABEL);
+		this.passwordInput = new PasswordFieldPanel(RegisterValidation.PASSWORD_LABEL);
 		
 		panel.add(this.firstNameInput);
 		panel.add(this.lastNameInput);

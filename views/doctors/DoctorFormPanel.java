@@ -9,14 +9,14 @@ import entrega.entities.Doctor;
 import entrega.services.DoctorService;
 import entrega.validation.DoctorValidation;
 import entrega.views.EntityFormPanel;
-import entrega.views.InputPanel;
+import entrega.views.TextFieldPanel;
 
 @SuppressWarnings("serial")
 public class DoctorFormPanel extends EntityFormPanel<Doctor> {
-	private InputPanel firstNameInput;
-	private InputPanel lastNameInput;
-	private InputPanel phoneInput;
-	private InputPanel emailInput;
+	private TextFieldPanel firstNameInput;
+	private TextFieldPanel lastNameInput;
+	private TextFieldPanel phoneInput;
+	private TextFieldPanel emailInput;
 	
 	public DoctorFormPanel(DoctorService service) {
 		super("Nuevo Médico", service);
@@ -52,10 +52,10 @@ public class DoctorFormPanel extends EntityFormPanel<Doctor> {
 	}
 		
 	protected void buildCenter(JPanel panel) {
-		this.firstNameInput = new InputPanel(DoctorValidation.FIRST_NAME_LABEL);
-		this.lastNameInput = new InputPanel(DoctorValidation.LAST_NAME_LABEL);
-		this.phoneInput = new InputPanel(DoctorValidation.PHONE_LABEL);
-		this.emailInput = new InputPanel(DoctorValidation.EMAIL_LABEL);
+		this.firstNameInput = new TextFieldPanel(DoctorValidation.FIRST_NAME_LABEL);
+		this.lastNameInput = new TextFieldPanel(DoctorValidation.LAST_NAME_LABEL);
+		this.phoneInput = new TextFieldPanel(DoctorValidation.PHONE_LABEL);
+		this.emailInput = new TextFieldPanel(DoctorValidation.EMAIL_LABEL);
 		
 		panel.add(this.firstNameInput);
 		panel.add(this.lastNameInput);

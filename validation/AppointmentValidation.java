@@ -8,8 +8,8 @@ import entrega.validation.rules.ValidDoctor;
 import entrega.validation.rules.ValidPatient;
 
 public class AppointmentValidation implements Validation {
-	public static String DOCTOR_ID_LABEL = "ID Médico";
-	public static String PATIENT_ID_LABEL = "ID Paciente";
+	public static String DOCTOR_ID_LABEL = "Médico";
+	public static String PATIENT_ID_LABEL = "Paciente";
 	public static String STARTS_AT_LABEL = "Comienzo";
 	public static String DURATION_LABEL = "Duración en minutos";
 	

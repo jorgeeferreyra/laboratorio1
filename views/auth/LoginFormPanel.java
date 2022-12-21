@@ -8,13 +8,13 @@ import javax.swing.JPanel;
 import entrega.services.AuthService;
 import entrega.validation.LoginValidation;
 import entrega.views.FormPanel;
-import entrega.views.InputPanel;
-import entrega.views.PasswordInputPanel;
+import entrega.views.TextFieldPanel;
+import entrega.views.PasswordFieldPanel;
 
 @SuppressWarnings("serial")
 public class LoginFormPanel extends FormPanel {
-	private InputPanel idNumberInput;
-	private PasswordInputPanel passwordInput;
+	private TextFieldPanel idNumberInput;
+	private PasswordFieldPanel passwordInput;
 			
 	public LoginFormPanel(AuthService service) {
 		super("Ingresar", service);
@@ -29,8 +29,8 @@ public class LoginFormPanel extends FormPanel {
 	}
 	
 	protected void buildCenter(JPanel panel) {
-		this.idNumberInput = new InputPanel(LoginValidation.ID_NUMBER_LABEL);
-		this.passwordInput = new PasswordInputPanel(LoginValidation.PASSWORD_LABEL);
+		this.idNumberInput = new TextFieldPanel(LoginValidation.ID_NUMBER_LABEL);
+		this.passwordInput = new PasswordFieldPanel(LoginValidation.PASSWORD_LABEL);
 		
 		panel.add(this.idNumberInput);
 		panel.add(this.passwordInput);

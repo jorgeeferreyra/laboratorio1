@@ -57,7 +57,6 @@ public class FrontService {
 
 	public void bootstrap() {
 		this.loadRememberedUser();
-		
 		if (this.getUser() instanceof User) {
 			this.focusLoggedService();
 		} else {

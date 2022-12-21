@@ -9,11 +9,11 @@ import entrega.entities.HealthAssurance;
 import entrega.services.HealthAssuranceService;
 import entrega.validation.HealthAssuranceValidation;
 import entrega.views.EntityFormPanel;
-import entrega.views.InputPanel;
+import entrega.views.TextFieldPanel;
 
 @SuppressWarnings("serial")
 public class HealthAssuranceFormPanel extends EntityFormPanel<HealthAssurance> {
-	private InputPanel nameInput;
+	private TextFieldPanel nameInput;
 	
 	public HealthAssuranceFormPanel(HealthAssuranceService service) {
 		super("Nueva Obra Social", service);
@@ -34,7 +34,7 @@ public class HealthAssuranceFormPanel extends EntityFormPanel<HealthAssurance> {
 	}
 		
 	protected void buildCenter(JPanel panel) {
-		this.nameInput = new InputPanel(HealthAssuranceValidation.NAME_LABEL);
+		this.nameInput = new TextFieldPanel(HealthAssuranceValidation.NAME_LABEL);
 		
 		panel.add(this.nameInput);
 	 }

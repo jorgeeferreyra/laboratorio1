@@ -1,5 +1,6 @@
 package entrega.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import entrega.FrontService;
@@ -18,7 +19,7 @@ import entrega.views.patients.PatientListPanel;
 public class PatientService extends EntityService<Patient> {	
 	public PatientService(FrontService frontService) {
 		super(frontService);
-		
+
 		this.setListPanel(new PatientListPanel(this));
 		this.setFormPanel(new PatientFormPanel(this));
 	}
@@ -38,10 +39,23 @@ public class PatientService extends EntityService<Patient> {
 				return "Obra Social no encontrado";
 			}
 			
-			return healthAssurance.getName();
+			return healthAssurance.toString();
 		} catch (DaoException e) {
 			return "Obra Social no encontrado";
 		}
+	}
+	
+	@Override
+	protected void beforeShowFormPanel() {
+		List<HealthAssurance> healthAssurances = new ArrayList<HealthAssurance>();
+		
+		try {
+			HealthAssuranceDao healthAssuranceDao = H2DaoFactory.getHealthAssuranceDao();
+			healthAssurances = healthAssuranceDao.getAll(this.getFrontService().getUser().getId());
+		} catch (DaoException e) {
+		}
+		
+		((PatientFormPanel) this.getFormPanel()).setHealthAssurances(healthAssurances);
 	}
 		
 	protected List<Patient> getListPanelData() throws DaoException {

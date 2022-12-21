@@ -18,7 +18,7 @@ abstract public class EntityService<T> extends Service {
 	public EntityService(FrontService frontService) {
 		super(frontService);
 	}
-	
+		
 	public void showListPanel() {
 		SwingWorker<Void, String> swingWorker = new SwingWorker<Void, String>() {
 			@Override
@@ -43,14 +43,17 @@ abstract public class EntityService<T> extends Service {
 	}
 	
 	public void showFormPanel() {
+		beforeShowFormPanel();
 		this.formPanel.setEntity(null);
 		getFrontService().showPanel(this.formPanel);
 	}
 	
-	public void showFormPanel(T entity) {
+	public void showFormPanel(T entity) {		
 		SwingWorker<Void, String> swingWorker = new SwingWorker<Void, String>() {
 			@Override
-			protected Void doInBackground() throws Exception {
+			protected Void doInBackground() throws Exception {				
+				beforeShowFormPanel();
+				
 				formPanel.setEntity(entity);
 				
 				getFrontService().showPanel(formPanel);
@@ -129,7 +132,12 @@ abstract public class EntityService<T> extends Service {
 	protected void setFormPanel(EntityFormPanel<T> formPanel) {
 		this.formPanel = formPanel;
 	}
+	
 
+	protected void beforeShowFormPanel() {
+		System.out.print("not works");
+	}
+	
 	public abstract void showIndexPanel();
 	protected abstract List<T> getListPanelData() throws DaoException;
 	protected abstract void persistEntity() throws DaoException, ValidationException;

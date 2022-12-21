@@ -1,5 +1,6 @@
 package entrega.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import entrega.FrontService;
@@ -39,7 +40,7 @@ public class AppointmentService extends EntityService<Appointment> {
 				return "Médico no encontrado";
 			}
 			
-			return doctor.getFirstName() + " " + doctor.getLastName();
+			return doctor.toString();
 		} catch (DaoException e) {
 			return "Médico no encontrado";
 		}
@@ -55,10 +56,33 @@ public class AppointmentService extends EntityService<Appointment> {
 				return "Paciente no encontrado";
 			}
 			
-			return patient.getFirstName() + " " + patient.getLastName();
+			return patient.toString();
 		} catch (DaoException e) {
 			return "Paciente no encontrado";
 		}
+	}
+	
+	@Override
+	protected void beforeShowFormPanel() {
+		List<Doctor> doctors = new ArrayList<Doctor>();
+		List<Patient> patients = new ArrayList<Patient>();
+		
+		try {
+			DoctorDao doctorDao = H2DaoFactory.getDoctorDao();
+			doctors = doctorDao.getAll(this.getFrontService().getUser().getId());
+		} catch (DaoException e) {
+		}
+		
+		try {
+			PatientDao patientDao = H2DaoFactory.getPatientDao();
+			patients = patientDao.getAll(this.getFrontService().getUser().getId());
+		} catch (DaoException e) {
+		}
+		
+		AppointmentFormPanel formPanel = ((AppointmentFormPanel) this.getFormPanel());
+		
+		formPanel.setDoctors(doctors);
+		formPanel.setPatients(patients);
 	}
 		
 	protected List<Appointment> getListPanelData() throws DaoException {

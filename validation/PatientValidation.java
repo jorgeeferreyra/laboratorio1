@@ -7,7 +7,7 @@ import entrega.validation.rules.IsInt;
 import entrega.validation.rules.ValidHealthAssurance;
 
 public class PatientValidation implements Validation {
-	public static String HEALTH_ASSURANCE_ID_LABEL = "ID Obra Social";
+	public static String HEALTH_ASSURANCE_ID_LABEL = "Obra Social";
 	public static String FIRST_NAME_LABEL = "Nombre";
 	public static String LAST_NAME_LABEL = "Apellido";
 	public static String PHONE_LABEL = "Teléfono";

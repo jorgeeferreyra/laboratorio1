@@ -2,34 +2,41 @@ package entrega.views.patients;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JPanel;
 
+import entrega.entities.HealthAssurance;
 import entrega.entities.Patient;
 import entrega.services.PatientService;
 import entrega.validation.PatientValidation;
+import entrega.views.EntityComboBoxPanel;
 import entrega.views.EntityFormPanel;
-import entrega.views.InputPanel;
+import entrega.views.TextFieldPanel;
 
 @SuppressWarnings("serial")
-public class PatientFormPanel extends EntityFormPanel<Patient> {
-	private InputPanel healthAssuranceIdInput;
-	private InputPanel firstNameInput;
-	private InputPanel lastNameInput;
-	private InputPanel phoneInput;
-	private InputPanel emailInput;
+public class PatientFormPanel extends EntityFormPanel<Patient> {	
+	private EntityComboBoxPanel<HealthAssurance> healthAssuranceInput;
+	private TextFieldPanel firstNameInput;
+	private TextFieldPanel lastNameInput;
+	private TextFieldPanel phoneInput;
+	private TextFieldPanel emailInput;
 	
 	public PatientFormPanel(PatientService service) {
 		super("Nuevo Paciente", service);
 	}
-		
+	
+	public void setHealthAssurances(List<HealthAssurance> healthAssurances) {
+		this.healthAssuranceInput.setEntities(healthAssurances);
+	}
+	
 	public void setEntity(Patient patient) {
 		this.entity = patient;
 		boolean isEditing = patient instanceof Patient;
 		
 		this.setTitle(isEditing ? "Editar Paciente" : "Nuevo Paciente");
 		
-		this.healthAssuranceIdInput.setFieldText(isEditing ? patient.getHealthAssuranceId().toString() : "");
+		this.healthAssuranceInput.setSelectedEntityId(isEditing ? patient.getHealthAssuranceId() : 0);
 		this.firstNameInput.setFieldText(isEditing ? patient.getFirstName() : "");
 		this.lastNameInput.setFieldText(isEditing ? patient.getLastName() : "");
 		this.phoneInput.setFieldText(isEditing ? patient.getPhone() : "");
@@ -37,7 +44,7 @@ public class PatientFormPanel extends EntityFormPanel<Patient> {
 	}
 
 	public String getHealthAssuranceId() {
-		return this.healthAssuranceIdInput.getTrimmedFieldText();
+		return this.healthAssuranceInput.getSelectedEntityId().toString();
 	}
 	
 	public String getFirstName() {
@@ -57,13 +64,13 @@ public class PatientFormPanel extends EntityFormPanel<Patient> {
 	}
 		
 	protected void buildCenter(JPanel panel) {
-		this.healthAssuranceIdInput = new InputPanel(PatientValidation.HEALTH_ASSURANCE_ID_LABEL);
-		this.firstNameInput = new InputPanel(PatientValidation.FIRST_NAME_LABEL);
-		this.lastNameInput = new InputPanel(PatientValidation.LAST_NAME_LABEL);
-		this.phoneInput = new InputPanel(PatientValidation.PHONE_LABEL);
-		this.emailInput = new InputPanel(PatientValidation.EMAIL_LABEL);
-		
-		panel.add(this.healthAssuranceIdInput);
+		this.healthAssuranceInput = new EntityComboBoxPanel<HealthAssurance>(PatientValidation.HEALTH_ASSURANCE_ID_LABEL);
+		this.firstNameInput = new TextFieldPanel(PatientValidation.FIRST_NAME_LABEL);
+		this.lastNameInput = new TextFieldPanel(PatientValidation.LAST_NAME_LABEL);
+		this.phoneInput = new TextFieldPanel(PatientValidation.PHONE_LABEL);
+		this.emailInput = new TextFieldPanel(PatientValidation.EMAIL_LABEL);
+				
+		panel.add(this.healthAssuranceInput);
 		panel.add(this.firstNameInput);
 		panel.add(this.lastNameInput);
 		panel.add(this.phoneInput);
@@ -82,7 +89,7 @@ public class PatientFormPanel extends EntityFormPanel<Patient> {
 		panel.add(this.createButton("Limpiar campos", new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				healthAssuranceIdInput.setFieldText("");
+				healthAssuranceInput.setSelectedEntityId(0);
 				firstNameInput.setFieldText("");
 				lastNameInput.setFieldText("");
 				phoneInput.setFieldText("");
