@@ -135,7 +135,6 @@ abstract public class EntityService<T> extends Service {
 	
 
 	protected void beforeShowFormPanel() {
-		System.out.print("not works");
 	}
 	
 	public abstract void showIndexPanel();
